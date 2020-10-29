@@ -1,15 +1,21 @@
 #include <memory.h>
 #include <SDL2/SDL.h>
-//Incluir .hpp das clases para quais os ponteiros apontam
+//Incluir .hpp das classes model e view
 
-class Physics{
+class SamusMovements{
     private:
-        std::shared_ptr<Samus>ptr;
-        //Terminar de colocar ponteiros apontando pras classes de Model/View
+       Model model;
+       View view;
     public:
-        Physics(std::shared_ptr<Samus>samus){
-            this -> samus = samus;
+        SamusMovements(Model &model, View &view){
         }
 
-        //EQUAÇÕES DAS LEIS FÍSICAS
+        void velocidadeSalto();
+        void saltoSamus();
+        void movimentoUniforme();
+        void Rasterizacao();
+};
 
+class Tiro{
+
+};

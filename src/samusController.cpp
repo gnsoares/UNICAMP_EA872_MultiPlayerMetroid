@@ -1,20 +1,27 @@
 #include <iostream>
-#include "leisFisicas.hpp"
+#include "samusController.hpp"
 #include <memory>
 #include <SDL2/SDL.h>
 
-void Physics::aceleracaoSalto(){
-    dados.velocidadeY = dados.velocidadeInicialY - dados.gravidade*dados.tempo;
+void SamusMovements::velocidadeSalto(){
+    model.velocidadeY = model.velocidadeInicialY - model.gravidade*model.tempo;
 }
 
-void Physics::saltoSamus(){
-    dados.y = dados.yInicial + dados.velocidadeY*dados.tempo - (dados.gravidade*dados.tempo^2)/2;
-    dados.yInicial = dados.y;
+void SamusMovements::saltoSamus(){
+    model.yS = model.ySInicial + model.velocidadeY*model.tempo - (model.gravidade*model.tempo^2)/2;
+    model.ySInicial = model.y;
 }
 
-void Physics::movimentoUniforme(){
-    if (//Teclado direita velocidade = +5)
-    if (//teclado esquerda )
-    dados.x = dados.xInicial + dados.velocidadeX*dados.tempo;
-    dados.xInicial = dados.x;
+void SamusMovements::movimentoUniforme(){
+    //if (teclado direita velocidade = +5)
+    model.xS += 0.1;
+    //if (teclado esquerda)
+    model.xS -= 0.1;
+}
+
+void SamusMovements::Rasterizacao(){
+    int xPixel = model.xS + view.larguraTela/2;
+    int yPixel = model.yS + view.alturaTela/2;
+    view.xS = xPixel;
+    view.yS = xPixel;
 }
