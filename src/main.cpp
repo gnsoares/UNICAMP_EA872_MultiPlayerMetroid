@@ -1,16 +1,22 @@
 #include <iostream>
-#include "constants.hpp"
-#include "models.hpp"
+#include "samusController.hpp"
 
 int main() {
+    Samus samus;
+    View view;
+    SamusPhysics samusphysics(samus, view);
 
-    Samus samus(5, 7);
+    SDL_Event evento;
 
-    std::cout << "Testando criacao de modelos" << std::endl;
-    std::cout << samus.rect.x << ", " << samus.rect.y << std::endl;
+    bool rodando = true;
 
-    std::cout << "Testando importacao de constantes" << std::endl;
-    std::cout << "Passo horizontal da Samus " << SamusMovement::horizontalStep << std::endl;
-
-    return 0;
+    while(rodando){
+        while (SDL_PollEvent(&evento)) {
+            if (evento.type == SDL_QUIT) {
+                rodando = false;
+            }
+        }
+        samusphysics.update();
+        SDL_Delay(30);
+    }
 }

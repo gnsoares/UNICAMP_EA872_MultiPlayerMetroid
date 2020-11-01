@@ -1,5 +1,6 @@
 #include <string>
 #include <SDL2/SDL_image.h>
+#include "constants.hpp"
 
 class Entity {
     public:
@@ -13,7 +14,7 @@ class Samus:public Entity {
     public:
         int hp;
         int missileCounter;
-        float mass;
+        float verticalVelocity = SamusMovement::initialVerticalVelocity;
         std::string state;
 };
 
@@ -21,6 +22,9 @@ class Metroid:public Entity {
     using Entity::Entity;
     public:
         int hp;
+        float force;
+        float acceleration;
+        float velocity;
 };
 
 class MotherBrain:public Entity {
