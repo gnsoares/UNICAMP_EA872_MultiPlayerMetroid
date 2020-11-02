@@ -1,4 +1,9 @@
 #include <SDL2/SDL.h>
+#include <map>
+#include <fstream>
+#include <vector>
+#include "models.hpp"
+
 
 bool checkCollision(SDL_Rect rect1, SDL_Rect rect2) {
 
@@ -14,4 +19,17 @@ bool checkCollision(SDL_Rect rect1, SDL_Rect rect2) {
 
     // rectangles overlap in x and y: they are colliding
     return xOverlap && yOverlap;
+}
+
+std::map<std::string, std::string> decodeTextures(std::string name) {
+    std::map<std::string, std::string> map;
+    std::ifstream texturesFile("../doc/" + name, std::ios::in);
+    std::string code, fileName;
+
+    while (getline(texturesFile, code, ' ')) {
+        getline(texturesFile, fileName);
+        map[code] = fileName;
+    }
+
+    return map;
 }

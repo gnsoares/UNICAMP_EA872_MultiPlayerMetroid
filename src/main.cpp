@@ -27,5 +27,10 @@ int main() {
     std::cout << "Testando importacao de constantes" << std::endl;
     std::cout << "Passo horizontal da Samus " << SamusMovement::horizontalStep << std::endl;
 
+    std::cout << "Testando decodificação das texturas" << std::endl;
+    std::map<std::string, std::string> map = decodeTextures(Room::texturesFile);
+    for (std::map<std::string, std::string>::iterator it = map.begin(); it != map.end(); it++)
+        std::cout << it->first << " :: " << it->second << std::endl;
+
     return 0;
 }
