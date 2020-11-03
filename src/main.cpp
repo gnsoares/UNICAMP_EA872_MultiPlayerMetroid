@@ -5,11 +5,11 @@
 
 int main() {
 
-    Samus samus(5, 7);
+    Models::Samus samus(5, 7);
     samus.rect.w = 10;
     samus.rect.h = 13;
 
-    Metroid metroid(6, 3);
+    Models::Metroid metroid(6, 3);
     metroid.rect.w = 7;
     metroid.rect.h = 5;
 
@@ -31,6 +31,19 @@ int main() {
     std::map<std::string, std::string> map = decodeTextures(Room::texturesFile);
     for (std::map<std::string, std::string>::iterator it = map.begin(); it != map.end(); it++)
         std::cout << it->first << " :: " << it->second << std::endl;
+
+    std::cout << "Testando criação de salas" << std::endl;
+    Models::Room testRoom = loadRoom("test", map);
+    std::cout << "Blocos: ";
+    for (int i = 0; i < testRoom.blocks.size(); i++) {
+        std::cout << "(x = " << testRoom.blocks[i].rect.x << ", y = " << testRoom.blocks[i].rect.y << ") ";
+    }
+    std::cout << std::endl;
+    std::cout << "Portas: ";
+    for (int i = 0; i < testRoom.doors.size(); i++) {
+        std::cout << "(x = " << testRoom.doors[i].rect.x << ", y = " << testRoom.doors[i].rect.y << ") ";
+    }
+    std::cout << std::endl;
 
     return 0;
 }

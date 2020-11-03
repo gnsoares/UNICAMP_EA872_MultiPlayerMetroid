@@ -1,7 +1,12 @@
+#ifndef METROID_UTILS_H
+#define METROID_UTILS_H
+
 #include <SDL2/SDL.h>
 #include <map>
 #include <string>
 #include <vector>
+#include "models.hpp"
+
 
 /*! \brief Collision checker between two rectangles
  *
@@ -17,3 +22,12 @@ bool checkCollision(SDL_Rect rect1, SDL_Rect rect2);
  * \return map from char to file name
  */
 std::map<std::string, std::string> decodeTextures(std::string name);
+
+/*! \brief Room loader
+ *
+ * \param name room file nmae
+ * \return room object
+ */
+Models::Room loadRoom(std::string name, std::map<std::string, std::string> textureMap);
+
+#endif
