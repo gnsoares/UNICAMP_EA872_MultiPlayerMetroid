@@ -12,4 +12,8 @@ namespace MetroidMovement {
     const int DampingConstant = 5;
 }
 
+namespace Room {
+    const std::string texturesFile = "texture_filenames.txt";
+}
+
 #endif
