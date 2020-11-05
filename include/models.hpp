@@ -2,14 +2,22 @@
 #define METROID_MODELS_H
 
 #include <string>
-#include <SDL2/SDL_image.h>
 #include <vector>
+#include <SDL2/SDL.h>
 
 
 namespace Models {
     class Entity {
         public:
-            explicit Entity(int x, int y);
+
+            /*! \brief Entity constructor
+            *
+            * \param x entity x coordinate
+            * \param y entity y coordinate
+            * \param w entity width
+            * \param h entity height
+            */
+            explicit Entity(int x, int y, int w, int h);
             SDL_Texture *texture = nullptr;
             std::string textureFile;
             SDL_Rect rect;
