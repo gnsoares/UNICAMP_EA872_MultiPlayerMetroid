@@ -1,20 +1,13 @@
 #include <iostream>
 #include "constants.hpp"
+#include "controllers.hpp"
 #include "models.hpp"
 #include "utils.hpp"
-#include "samusController.hpp"
 
 int main() {
-    Models::Samus samus(2,2);
-    SamusPhysics samusphysics(samus);
-
-    Models::Samus samus(5, 7);
-    samus.rect.w = 10;
-    samus.rect.h = 13;
-
-    Models::Metroid metroid(6, 3);
-    metroid.rect.w = 7;
-    metroid.rect.h = 5;
+    Models::Samus samus(5, 7, 10, 13);
+    Controllers::Samus samusController(samus);
+    Models::Metroid metroid(6, 3, 7, 5);
 
     std::cout << "Testando retangulo da Samus" << std::endl;
     std::cout << "(x = " << samus.rect.x << ", y = " << samus.rect.y << ")" << std::endl;
@@ -50,18 +43,3 @@ int main() {
 
     return 0;
 }
-    /*SDL_Event evento;
-
-    bool rodando = true;
-
-    while(rodando){
-        while (SDL_PollEvent(&evento)) {
-            if (evento.type == SDL_QUIT) {
-                rodando = false;
-            }
-        }
-        samusphysics.update();
-        SDL_Delay(30);
-    }
-}
-*/

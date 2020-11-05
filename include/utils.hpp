@@ -1,10 +1,10 @@
 #ifndef METROID_UTILS_H
 #define METROID_UTILS_H
 
-#include <SDL2/SDL.h>
 #include <map>
 #include <string>
 #include <vector>
+#include <SDL2/SDL.h>
 #include "models.hpp"
 
 
@@ -18,14 +18,15 @@ bool checkCollision(SDL_Rect rect1, SDL_Rect rect2);
 
 /*! \brief Textures decoder
  *
- * \param name textures code file name
- * \return map from char to file name
+ * \param name textures encoder file name
+ * \return map from entity code to texture file name
  */
 std::map<std::string, std::string> decodeTextures(std::string name);
 
 /*! \brief Room loader
  *
- * \param name room file nmae
+ * \param name room file name
+ * \param textureMap map from entity code to texture file name
  * \return room object
  */
 Models::Room loadRoom(std::string name, std::map<std::string, std::string> textureMap);
