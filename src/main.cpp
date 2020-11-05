@@ -2,8 +2,11 @@
 #include "constants.hpp"
 #include "models.hpp"
 #include "utils.hpp"
+#include "samusController.hpp"
 
 int main() {
+    Models::Samus samus(2,2);
+    SamusPhysics samusphysics(samus);
 
     Models::Samus samus(5, 7);
     samus.rect.w = 10;
@@ -47,3 +50,18 @@ int main() {
 
     return 0;
 }
+    /*SDL_Event evento;
+
+    bool rodando = true;
+
+    while(rodando){
+        while (SDL_PollEvent(&evento)) {
+            if (evento.type == SDL_QUIT) {
+                rodando = false;
+            }
+        }
+        samusphysics.update();
+        SDL_Delay(30);
+    }
+}
+*/

@@ -21,6 +21,7 @@ namespace Models {
             int hp;
             int missileCounter;
             float mass;
+            float verticalVelocity;
             std::string state;
     };
 

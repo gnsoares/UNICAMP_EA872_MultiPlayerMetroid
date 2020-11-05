@@ -1,15 +1,19 @@
 #include <memory.h>
 #include <SDL2/SDL.h>
-//Incluir .hpp das clases para quais os ponteiros apontam
+#include "models.hpp"
+#include "views.hpp"
 
-class Physics{
+class SamusPhysics{
     private:
-        std::shared_ptr<Samus>ptr;
-        //Terminar de colocar ponteiros apontando pras classes de Model/View
+        const Uint8* state;
+        Models::Samus samus;
     public:
-        Physics(std::shared_ptr<Samus>samus){
-            this -> samus = samus;
+        SamusPhysics(Models::Samus &samus) : samus(samus){
+            this->state = SDL_GetKeyboardState(nullptr);
         }
-
-        //EQUAÇÕES DAS LEIS FÍSICAS
+        void jumpingAceleration();
+        void jumpingPosition();
+        void walking();
+        void update();
+};
 

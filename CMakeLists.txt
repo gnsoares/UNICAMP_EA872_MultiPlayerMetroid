@@ -17,7 +17,7 @@ target_link_libraries(metroid models)
 add_library(views src/views.cpp)
 target_link_libraries(metroid views)
 
-add_library(controllers src/controllers.cpp)
+add_library(controllers src/samusController.cpp)
 target_link_libraries(metroid controllers)
 
 add_library(utils src/utils.cpp)
@@ -27,3 +27,8 @@ target_link_libraries(metroid utils)
 # Garantir que usaremos C++11 (ou superior, se preciso)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+target_link_libraries(metroid SDL2)
+target_link_libraries(metroid SDL2_image)
+
+
