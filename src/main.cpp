@@ -1,10 +1,14 @@
-#include <iostream>
+#define DEBUG 0
+
 #include "constants.hpp"
 #include "controllers.hpp"
 #include "models.hpp"
 #include "utils.hpp"
 
-int main() {
+
+#if DEBUG
+#include <iostream>
+void runTests() {
     Models::Samus samus(5, 7, 10, 13);
     Controllers::Samus samusController(samus);
     Models::Metroid metroid(6, 3, 7, 5);
@@ -40,6 +44,42 @@ int main() {
         std::cout << "(x = " << testRoom.doors[i].rect.x << ", y = " << testRoom.doors[i].rect.y << ") ";
     }
     std::cout << std::endl;
+}
+#endif
+
+
+int main() {
+
+    #if DEBUG
+    runTests();
+    #endif
+
+    Models::Samus samus(Screen::width/2, Screen::height/2, 20, 60);
+    std::map<std::string, std::string> textureMap = decodeTextures(Room::texturesFile);
+    samus.textureFile = textureMap["S"];
+    Models::Room testRoom = loadRoom("test", textureMap);
+
+    Controllers::Map map(testRoom, samus);
+    map.changeRooms(testRoom);
+
+    SDL_Event event;
+
+    // Game must run until user quits
+    while (true) {
+
+        // Poll events
+        if (SDL_PollEvent(&event)) {
+
+            // User asked to quit: quit
+            if (event.type == SDL_QUIT)
+                break;
+
+        }
+
+        map.update();
+        SDL_Delay(50);
+
+    }
 
     return 0;
 }
