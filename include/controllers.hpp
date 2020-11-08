@@ -4,10 +4,24 @@
 #include <memory.h>
 #include <SDL2/SDL.h>
 #include "models.hpp"
+#include "views.hpp"
+
 
 namespace Controllers {
 
-    class Metroid{
+    class Map {
+        private:
+            Models::Room room;
+            Models::Samus samus;
+            Views::Map mapView;
+
+        public:
+            Map(Models::Room &room, Models::Samus &samus);
+            void changeRooms(Models::Room &room);
+            void update();
+    };
+
+    class Metroid {
         private:
             Models::Metroid metroid;
         public:
@@ -19,7 +33,7 @@ namespace Controllers {
             void uniformMovement();
     };
 
-    class Samus{
+    class Samus {
         private:
             const Uint8* state;
             Models::Samus samus;

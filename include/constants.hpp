@@ -19,6 +19,11 @@ namespace MetroidMovement {
     const int dampingConstant = 5;
 }
 
+namespace Screen {
+    const int width = 640;
+    const int height = 480;
+}
+
 namespace SamusMovement {
     const int horizontalStep = 10;
     const int initialVerticalVelocity = 10;
