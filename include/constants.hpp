@@ -29,7 +29,7 @@ namespace SamusMovement {
     const int initialVerticalVelocity = 10;
 }
 
-namespace Physics{
+namespace Physics {
     const int gravity = 1;
     const int time = 1;
 }
@@ -37,5 +37,14 @@ namespace Physics{
 namespace Room {
     const std::string texturesFile = "texture_filenames.txt";
 }
+
+namespace Commands {
+    const std::string moveLeft = "MVL";
+    const std::string moveRight = "MVR";
+    const std::string lookUp = "LKU";
+    const std::string morph = "MPH";
+    const std::string jump = "JMP";
+}
+
 
 #endif
