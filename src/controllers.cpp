@@ -1,42 +1,64 @@
-#include <iostream>
-#include <memory>
 #include <SDL2/SDL.h>
 #include "constants.hpp"
 #include "controllers.hpp"
 using namespace Controllers;
 
 
-Map::Map(Models::Room &room, Models::Samus &samus) : room(room), samus(samus) {}
+Map::Map(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets) : room(room), samus(samus), bullets(bullets) {}
 
 void Map::changeRooms(Models::Room &room) {
     mapView.destroyTextures(this->room);
-    mapView.initializeRoom(room, samus);
-    mapView.drawFrame(room, samus);
+    mapView.initializeRoom(room, samus, bullets);
+    mapView.drawFrame(room, samus, bullets);
     this->room = room;
 }
 
 void Map::update() {
-    mapView.drawFrame(room, samus);
+    mapView.drawFrame(room, samus, bullets);
 }
 
-void Metroid::moleForce() {
-    // metroid.force = -MetroidMovement::elasticConstant * metroid.rect.x;
-}
+/*
+void Map::shotsCollisions(){
+    int shotsNumber = room.returnLenghtShot();
+    int metroidNumber = room.returnLenghtMetroid();
 
-void Metroid::acceleration() {
-    // metroid.acceleration = metroid.force / MetroidCharacteristics::mass;
-}
+    for (int i=0; i<shotsNumber; i++){
+        for(int j=0; j<metroidNumber; j++){
+            Models::Shot shotPosition = room.returnShotX(i);
+            Models::Metroid metroidPosition = room.returnMetroid(i);
+            //Checks collision between Metroid and Shot
+            bool shotCollided = checkCollision(metroidPosition.rect, shotPosition.rect);
+            //If they're collinding, metroid takes a hit
+            if (shotCollided){
+                room.eraseShot(i);
+                metroidPosition.hp -= 10;
+                room.updateMetroidLife(metroidPosition.hp, j);
+            }
+            //Metroid's death
+            if (metroidPosition.hp == 0){
+                room.eraseMetroid(j);
+            }
 
-void Metroid::velocity() {
-    // metroid.velocity = metroid.velocity + metroid.acceleration * Physics::time;
+            //Samus loses life
+            bool samusCollided = checkCollision(metroidPosition.rect, samus.rect);
+            
+            if (samusCollided){
+                samus.hp -= 10;
+            }
+        }
+    }
 }
+*/
 
-void Metroid::position() {
-    // metroid.rect.x = metroid.rect.x + metroid.velocity * Physics::time;
-}
-
-void Metroid::uniformMovement() {
-    // implement later
+void Map::metroidPosition(){
+    int metroidNumber = room.returnLenghtMetroid();
+    for(int i = 0; i<metroidNumber; i++){
+        Models::Metroid metroidMole = room.returnMetroid(i);
+        metroidMole.force = -MetroidMovement::elasticConstant * metroidMole.rect.x;
+        metroidMole.acceleration = metroidMole.force/MetroidMovement::mass;
+        metroidMole.velocity = metroidMole.velocity + metroidMole.acceleration*Physics::time;
+        metroidMole.rect.x = metroidMole.rect.x + metroidMole.velocity * Physics::time;
+    }
 }
 
 Samus::Samus(Models::Samus &samus) : samus(samus) {}
@@ -101,4 +123,30 @@ void Samus::jumpingAceleration() {
 void Samus::jumpingPosition() {
     samus.rect.x += samus.verticalVelocity * Physics::time -
                    ( Physics::gravity * Physics::time^2 ) / 2;
+}
+
+Shots::Shots(Models::Shot &shots, Models::ShotVector &bullet, Models::Samus &samus): shots(shots), bullet(bullet), samus(samus){}
+
+void Shots::saveShotPosition(){
+    if (shots.state == Shooting::creatingShot){
+        int initialPositionY = samus.rect.y + samus.rect.h/2;
+        int initialPositionX = samus.rect.x + samus.rect.w/2;
+        bullet.addShot(initialPositionX, initialPositionY, 1, 2);
+    }
+}
+
+void Shots::updateShotPosition(){
+    int shotsNumber = bullet.returnLenghtShot();
+    for (int i=0; i<shotsNumber; i++){
+        Models::Shot updatedShot = bullet.returnShotX(i);
+        int updatedX = 1 + updatedShot.rect.x;
+        bullet.updateShot(updatedX, i);
+    }
+}
+
+void Shots::update(){
+    std::string command = shotsView.processCommand();
+
+    if (command == Commands::shooting) saveShotPosition();
+    updateShotPosition();
 }

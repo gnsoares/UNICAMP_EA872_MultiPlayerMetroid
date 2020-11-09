@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include "models.hpp"
 #include "views.hpp"
+#include "utils.hpp"
 
 
 namespace Controllers {
@@ -13,25 +14,14 @@ namespace Controllers {
         private:
             Models::Room &room;
             Models::Samus &samus;
+            Models:: ShotVector &bullets;
             Views::Map mapView;
 
         public:
-            Map(Models::Room &room, Models::Samus &samus);
+            Map(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets);
             void changeRooms(Models::Room &room);
             void update();
-    };
-
-    class Metroid {
-        private:
-            Models::Metroid &metroid;
-
-        public:
-            Metroid(Models::Metroid &metroid);
-            void moleForce();
-            void acceleration();
-            void velocity();
-            void position();
-            void uniformMovement();
+            void metroidPosition();
     };
 
     class Samus {
@@ -50,6 +40,19 @@ namespace Controllers {
 
             void jumpingAceleration();
             void jumpingPosition();
+    };
+
+    class Shots{
+        private:
+            Models::Shot &shots;
+            Models::ShotVector &bullet;
+            Models::Samus &samus;
+            Views::Shots shotsView;
+        public:
+            Shots(Models::Shot &shots, Models::ShotVector &bullet, Models::Samus &samus);
+            void saveShotPosition();
+            void updateShotPosition();
+            void update();
     };
 }
 

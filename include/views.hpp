@@ -14,9 +14,9 @@ namespace Views {
 
         public:
             SDL_Window *window = nullptr;
-            void drawFrame(Models::Room &room, Models::Samus &samus);
+            void drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets);
             void destroyTextures(Models::Room &room);
-            void initializeRoom(Models::Room &room, Models::Samus &samus);
+            void initializeRoom(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets);
             Map();
             ~Map();
     };
@@ -25,6 +25,13 @@ namespace Views {
         private:
             const Uint8 *state = SDL_GetKeyboardState(NULL);
 
+        public:
+            std::string processCommand();
+    };
+
+    class Shots{
+        private:
+            const Uint8 *state = SDL_GetKeyboardState(NULL);
         public:
             std::string processCommand();
     };

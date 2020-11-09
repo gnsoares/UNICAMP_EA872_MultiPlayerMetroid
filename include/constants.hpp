@@ -3,7 +3,6 @@
 
 #include <string>
 
-
 namespace EntityCodes {
     const char block = '#';
     const char door = 'D';
@@ -15,6 +14,7 @@ namespace EntityCodes {
 }
 
 namespace MetroidMovement {
+    const int mass = 10;
     const int horizontalStep = 10;
     const int elasticConstant = 5;
     const int dampingConstant = 5;
@@ -35,6 +35,10 @@ namespace SamusMovement {
     const std::string runningState = "running";
 }
 
+namespace Shooting{
+    const std::string creatingShot = "shooting";
+}
+
 namespace Physics {
     const int gravity = 1;
     const int time = 1;
@@ -50,6 +54,7 @@ namespace Commands {
     const std::string lookUp = "LKU";
     const std::string morph = "MPH";
     const std::string jump = "JMP";
+    const std::string shooting = "SHT";
 }
 
 

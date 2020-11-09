@@ -28,15 +28,18 @@ namespace Models {
         public:
             int hp;
             int missileCounter;
-            float mass;
-            float verticalVelocity;
+            int mass;
+            int verticalVelocity;
             std::string state;
     };
 
     class Metroid:public Entity {
         using Entity::Entity;
         public:
-            int hp;
+            int hp = 50;
+            int force = 1;
+            int acceleration = 1;
+            int velocity = 1;
     };
 
     class MotherBrain:public Entity {
@@ -57,6 +60,19 @@ namespace Models {
 
     class Shot:public Entity {
         using Entity::Entity;
+        public:
+            std::string state;
+    };
+
+    class ShotVector{
+        private:
+            std::vector<Shot>bullets;
+        public:
+            void addShot(int rectx, int recty, int rectw, int recth);
+            void updateShot(int rectx, int i);
+            void eraseShot(int i);
+            Shot returnShotX(int i);
+            int returnLenghtShot();
     };
 
     class MissileShot:public Entity {
@@ -84,7 +100,15 @@ namespace Models {
             std::vector<Metroid> metroids;
             MorphingBall *morphingball = nullptr;
             MotherBrain *motherbrain = nullptr;
+            std::string state;
+
+            void addMetroid(int rectx, int recty, int rectw, int recth);
+            void updateMetroidPosition(int rectx, int i);
+            void updateMetroidLife(int hp, int i);
+            void eraseMetroid(int i);
+            Metroid returnMetroid(int i);
+            int returnLenghtMetroid();
     };
-}
+};
 
 #endif
