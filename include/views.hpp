@@ -1,6 +1,9 @@
+#ifndef METROID_VIEWS_H
+#define METROID_VIEWS_H
+
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <vector>
 #include "models.hpp"
 
 namespace Views {
@@ -19,3 +22,5 @@ namespace Views {
     };
 
 }
+
+#endif
