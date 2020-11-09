@@ -85,3 +85,19 @@ Map::~Map() {
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
+
+std::string Samus::processCommand() {
+
+    // update keyboard state
+    SDL_PumpEvents();
+
+    // return command based on pressed key
+    if (state[SDL_SCANCODE_SPACE]) return Commands::jump;
+    if (state[SDL_SCANCODE_UP]) return Commands::lookUp;
+    if (state[SDL_SCANCODE_DOWN]) return Commands::morph;
+    if (state[SDL_SCANCODE_LEFT]) return Commands::moveLeft;
+    if (state[SDL_SCANCODE_RIGHT]) return Commands::moveRight;
+
+    // no supported key pressed: return nothing
+    return "";
+}

@@ -21,6 +21,14 @@ namespace Views {
             ~Map();
     };
 
+    class Samus {
+        private:
+            const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+        public:
+            std::string processCommand();
+    };
+
 }
 
 #endif
