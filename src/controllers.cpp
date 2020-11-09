@@ -41,6 +41,56 @@ void Metroid::uniformMovement() {
 
 Samus::Samus(Models::Samus &samus) : samus(samus) {}
 
+void Samus::jump() {
+
+    // Samus already jumping: do nothing
+    if (samus.state == SamusMovement::jumpingState)
+        return;
+
+    // Samus is morphed: unmorph
+    if (samus.state == SamusMovement::morphedState) {
+        samus.state = SamusMovement::idleState;
+        return;
+    }
+
+    // update samus vertical velocity and state
+    samus.verticalVelocity = SamusMovement::initialVerticalVelocity;
+    samus.state = SamusMovement::jumpingState;
+}
+
+void Samus::lookUp() {
+
+    // Samus already jumping: do nothing
+    if (samus.state == SamusMovement::idleState)
+        return;
+
+    // update samus state
+    samus.state = SamusMovement::aimingUpState;
+}
+
+void Samus::morph() {
+    // TODO: check if samus has morphing ball and is not morphed
+}
+
+void Samus::moveLeft() {
+    samus.rect.x -= SamusMovement::horizontalStep;
+}
+
+void Samus::moveRight() {
+    samus.rect.x += SamusMovement::horizontalStep;
+}
+
+void Samus::update() {
+    std::string command = samusView.processCommand();
+
+    if (command == Commands::jump) jump();
+    if (command == Commands::lookUp) lookUp();
+    if (command == Commands::morph) morph();
+    if (command == Commands::moveLeft) moveLeft();
+    if (command == Commands::moveRight) moveRight();
+
+    // TODO: update Samus vertical position based on vertical velocity
+}
 
 void Samus::jumpingAceleration() {
     float samusV;
@@ -48,25 +98,7 @@ void Samus::jumpingAceleration() {
     samus.verticalVelocity = samusV;
 }
 
-
 void Samus::jumpingPosition() {
     samus.rect.x += samus.verticalVelocity * Physics::time -
                    ( Physics::gravity * Physics::time^2 ) / 2;
-}
-
-void Samus::walking() {
-    if (state[SDL_SCANCODE_LEFT])
-        samus.rect.x += 0.1;
-    if (state[SDL_SCANCODE_RIGHT])
-        samus.rect.x -= 0.1;
-}
-
-void Samus::update() {
-    SDL_PumpEvents();
-    if(state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT])
-        walking();
-    if (state[SDL_SCANCODE_UP]) {
-        jumpingAceleration();
-        jumpingPosition();
-    }
 }

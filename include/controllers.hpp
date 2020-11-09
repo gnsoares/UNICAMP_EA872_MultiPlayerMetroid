@@ -36,15 +36,20 @@ namespace Controllers {
 
     class Samus {
         private:
-            const Uint8* state;
             Models::Samus &samus;
+            Views::Samus samusView;
 
         public:
             Samus(Models::Samus &samus);
+            void jump();
+            void lookUp();
+            void morph();
+            void moveLeft();
+            void moveRight();
+            void update();
+
             void jumpingAceleration();
             void jumpingPosition();
-            void walking();
-            void update();
     };
 }
 

@@ -3,6 +3,7 @@
 
 #include <string>
 
+
 namespace EntityCodes {
     const char block = '#';
     const char door = 'D';
@@ -27,6 +28,11 @@ namespace Screen {
 namespace SamusMovement {
     const int horizontalStep = 10;
     const int initialVerticalVelocity = 10;
+    const std::string aimingUpState = "aimingUp";
+    const std::string idleState = "idle";
+    const std::string jumpingState = "jumping";
+    const std::string morphedState = "morphed";
+    const std::string runningState = "running";
 }
 
 namespace Physics {
