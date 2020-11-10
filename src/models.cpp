@@ -12,12 +12,8 @@ void ShotVector::addShot(int rectx, int recty, int rectw, int recth){
     bullets.push_back(Shot(rectx, recty, rectw, recth));
 }
 
-void ShotVector::updateShot(int rectx, int i){
-    bullets.at(i).rect.x = rectx;
-}
-
-void ShotVector::updateShotTexture(SDL_Texture *texture, int i){
-    bullets.at(i).texture = texture;
+void ShotVector::updateShot(Models::Shot shot, int i){
+    bullets.at(i) = shot;
 }
 
 void ShotVector::eraseShot(int i){

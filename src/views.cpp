@@ -63,7 +63,7 @@ void Map::initializeRoom(Models::Room &room, Models::Samus &samus, Models::ShotV
     }
 }
 
-void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector &shots) {
+void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets) {
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, samus.texture, nullptr, &samus.rect);
     for (int i = 0; i < room.blocks.size(); i++) {
@@ -73,10 +73,15 @@ void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector
         SDL_RenderCopy(renderer, room.metroids[i].texture, nullptr, &room.metroids[i].rect);
     }
 
-    for(int i = 0; i<shots.bullets.size(); i++){
-        shots.bullets[i].texture = texture;
-        SDL_QueryTexture(shots.bullets[i].texture, nullptr, nullptr, &shots.bullets[i].rect.w, &shots.bullets[i].rect.h);
-        SDL_RenderCopy (renderer, shots.bullets[i].texture, nullptr, &shots.bullets[i].rect);
+    for(int i = 0; i<bullets.returnLenghtShot(); i++){
+        Models::Shot shot = bullets.returnShotX(i);
+        if (shot.texture == nullptr){
+            shot.texture = IMG_LoadTexture(renderer, ("../assets/bullet.png"));
+            SDL_QueryTexture(shot.texture, nullptr, nullptr, &shot.rect.w, &shot.rect.h);
+            SDL_RenderCopy(renderer, shot.texture, nullptr, &shot.rect);
+            bullets.updateShot(shot, i);
+            
+        }
     }
 
     /*

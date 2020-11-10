@@ -170,8 +170,9 @@ void Shots::updateShotPosition(){
     int shotsNumber = bullet.returnLenghtShot();
     for (int i=0; i<shotsNumber; i++){
         Models::Shot updatedShot = bullet.returnShotX(i);
-        int updatedX = 1 + updatedShot.rect.x;
-        bullet.updateShot(updatedX, i);
+        updatedShot.rect.x = 1 + updatedShot.rect.x;
+        bullet.updateShot(updatedShot, i);
+        std::cout << updatedShot.rect.x << std::endl;
     }
 }
 
