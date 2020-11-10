@@ -13,9 +13,8 @@ int main() {
 
     Models::Samus samus(Screen::width/2, Screen::height/2-77, 20, 60);
     Models::ShotVector bullets;
-    Models::Shot shots (Screen::width/2, Screen::height/2, 10, 20);
     Controllers::Samus samusController(samus);
-    Controllers::Shots shotsController(shots, bullets, samus);
+    Controllers::Shots shotsController(bullets, samus);
     std::map<std::string, std::string> textureMap = decodeTextures(Room::texturesFile);
     samus.textureFile = textureMap["S"];
     Models::Room testRoom = loadRoom("test", textureMap);

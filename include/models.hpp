@@ -64,8 +64,8 @@ namespace Models {
 
     class ShotVector{
         private:
-            std::vector<Shot>bullets;
         public:
+            std::vector<Shot>bullets;
             void addShot(int rectx, int recty, int rectw, int recth);
             void updateShot(int rectx, int i);
             void updateShotTexture(SDL_Texture *texture, int i);
@@ -108,6 +108,7 @@ namespace Models {
             void updateMetroidVel (int v, int i);
             void updateMetroidLife(int hp, int i);
             void eraseMetroid(int i);
+            void modifyTexture (SDL_Texture *texture, int i);
             Metroid returnMetroid(int i);
             int returnLenghtMetroid();
     };

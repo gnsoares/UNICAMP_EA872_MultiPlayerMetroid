@@ -11,7 +11,7 @@ namespace Views {
     class Map {
         private:
             SDL_Renderer *renderer = nullptr;
-            SDL_Texture *texture = IMG_LoadTexture(renderer, "../assets/bullet.png");
+            SDL_Texture *texture = IMG_LoadTexture(renderer, "../assets/door.png");
 
         public:
             SDL_Window *window = nullptr;

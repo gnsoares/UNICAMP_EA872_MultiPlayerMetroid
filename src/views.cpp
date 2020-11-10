@@ -42,7 +42,7 @@ Map::Map() {
     }
 }
 
-void Map::initializeRoom(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets) {
+void Map::initializeRoom(Models::Room &room, Models::Samus &samus, Models::ShotVector &shots) {
 
     std::string code;
 
@@ -63,7 +63,7 @@ void Map::initializeRoom(Models::Room &room, Models::Samus &samus, Models::ShotV
     }
 }
 
-void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets) {
+void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector &shots) {
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, samus.texture, nullptr, &samus.rect);
     for (int i = 0; i < room.blocks.size(); i++) {
@@ -73,12 +73,21 @@ void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector
         SDL_RenderCopy(renderer, room.metroids[i].texture, nullptr, &room.metroids[i].rect);
     }
 
+    for(int i = 0; i<shots.bullets.size(); i++){
+        shots.bullets[i].texture = texture;
+        SDL_QueryTexture(shots.bullets[i].texture, nullptr, nullptr, &shots.bullets[i].rect.w, &shots.bullets[i].rect.h);
+        SDL_RenderCopy (renderer, shots.bullets[i].texture, nullptr, &shots.bullets[i].rect);
+    }
+
+    /*
     for (int i=0; i<bullets.returnLenghtShot(); i++){
         bullets.updateShotTexture(texture, i);
         Models::Shot shot = bullets.returnShotX(i);
         SDL_QueryTexture(bullets.returnShotX(i).texture, nullptr, nullptr, &shot.rect.w, &shot.rect.h);
         SDL_RenderCopy(renderer, bullets.returnShotX(i).texture, nullptr, &shot.rect);
+        std::cout << bullets.returnShotX(i).rect.y << std::endl;
     }
+    */
 
     SDL_RenderPresent(renderer);
 }

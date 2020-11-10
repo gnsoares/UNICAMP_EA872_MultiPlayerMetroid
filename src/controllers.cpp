@@ -55,7 +55,7 @@ void Map::metroidForce(){
     int metroidNumber = room.returnLenghtMetroid();
     for(int i = 0; i<metroidNumber; i++){
         Models::Metroid metroidMole = room.returnMetroid(i);
-        metroidMole.force = -MetroidMovement::elasticConstant * metroidMole.rect.x - MetroidMovement::dampingConstant * metroidMole.velocity;
+        metroidMole.force = -MetroidMovement::elasticConstant * (metroidMole.rect.x-320) - MetroidMovement::dampingConstant * metroidMole.velocity;
         room.updateMetroidForce(metroidMole.force, i);
     }
 }
@@ -154,11 +154,11 @@ void Samus::jumpingAceleration() {
 }
 
 void Samus::jumpingPosition() {
-    samus.rect.x += samus.verticalVelocity * Physics::time -
-                   ( Physics::gravity * Physics::time^2 ) / 2;
+    samus.rect.y -= samus.verticalVelocity * Physics::time -
+                   ( Physics::gravity * Physics::time *Physics::time ) / 2;
 }
 
-Shots::Shots(Models::Shot &shots, Models::ShotVector &bullet, Models::Samus &samus): shots(shots), bullet(bullet), samus(samus){}
+Shots::Shots(Models::ShotVector &bullet, Models::Samus &samus): bullet(bullet), samus(samus){}
 
 void Shots::saveShotPosition(){
         int initialPositionY = samus.rect.y + samus.rect.h/2;

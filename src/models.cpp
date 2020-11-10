@@ -53,6 +53,10 @@ void Room::updateMetroidPosition(int rectx, int i){
     metroids.at(i).rect.x = rectx;
 }
 
+void Room::modifyTexture (SDL_Texture *texture, int i){
+    metroids.at(i).texture = texture;
+}
+
 void Room::eraseMetroid(int i){
     metroids.erase(metroids.begin()+i);
 }

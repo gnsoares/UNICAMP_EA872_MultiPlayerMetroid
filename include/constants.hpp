@@ -16,7 +16,7 @@ namespace EntityCodes {
 namespace MetroidMovement {
     const int mass = 10000;
     const int horizontalStep = 10;
-    const int elasticConstant = 10;
+    const int elasticConstant = 100;
     const int dampingConstant = 20;
 }
 
@@ -40,7 +40,7 @@ namespace Shooting{
 }
 
 namespace Physics {
-    const int gravity = 1;
+    const int gravity = 2;
     const int time = 1;
 }
 

@@ -48,12 +48,11 @@ namespace Controllers {
 
     class Shots{
         private:
-            Models::Shot &shots;
             Models::ShotVector &bullet;
             Models::Samus &samus;
             Views::Shots shotsView;
         public:
-            Shots(Models::Shot &shots, Models::ShotVector &bullet, Models::Samus &samus);
+            Shots(Models::ShotVector &bullet, Models::Samus &samus);
             void saveShotPosition();
             void updateShotPosition();
             void update();
