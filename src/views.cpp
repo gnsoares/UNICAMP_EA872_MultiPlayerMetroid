@@ -1,14 +1,16 @@
 #include <iostream>
 #include <map>
+#include <string>
 #include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "constants.hpp"
 #include "models.hpp"
 #include "views.hpp"
+using namespace Views;
 
 
-Views::Map::Map() {
+Map::Map() {
     // create window
     window = SDL_CreateWindow(
         "Metroid Clone",
@@ -40,7 +42,7 @@ Views::Map::Map() {
     }
 }
 
-void Views::Map::initializeRoom(Models::Room &room, Models::Samus &samus) {
+void Map::initializeRoom(Models::Room &room, Models::Samus &samus) {
 
     std::string code;
 
@@ -61,7 +63,7 @@ void Views::Map::initializeRoom(Models::Room &room, Models::Samus &samus) {
     }
 }
 
-void Views::Map::drawFrame(Models::Room &room, Models::Samus &samus) {
+void Map::drawFrame(Models::Room &room, Models::Samus &samus) {
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, samus.texture, nullptr, &samus.rect);
     for (int i = 0; i < room.blocks.size(); i++) {
@@ -73,13 +75,29 @@ void Views::Map::drawFrame(Models::Room &room, Models::Samus &samus) {
     SDL_RenderPresent(renderer);
 }
 
-void Views::Map::destroyTextures(Models::Room &room) {
+void Map::destroyTextures(Models::Room &room) {
     for (int i = 0; i < room.blocks.size(); SDL_DestroyTexture(room.blocks[i++].texture));
     for (int i = 0; i < room.metroids.size(); SDL_DestroyTexture(room.metroids[i++].texture));
 }
 
-Views::Map::~Map() {
+Map::~Map() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+}
+
+std::string Samus::processCommand() {
+
+    // update keyboard state
+    SDL_PumpEvents();
+
+    // return command based on pressed key
+    if (state[SDL_SCANCODE_SPACE]) return Commands::jump;
+    if (state[SDL_SCANCODE_UP]) return Commands::lookUp;
+    if (state[SDL_SCANCODE_DOWN]) return Commands::morph;
+    if (state[SDL_SCANCODE_LEFT]) return Commands::moveLeft;
+    if (state[SDL_SCANCODE_RIGHT]) return Commands::moveRight;
+
+    // no supported key pressed: return nothing
+    return "";
 }

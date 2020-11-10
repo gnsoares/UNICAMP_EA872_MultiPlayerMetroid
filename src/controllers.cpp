@@ -3,74 +3,102 @@
 #include <SDL2/SDL.h>
 #include "constants.hpp"
 #include "controllers.hpp"
+using namespace Controllers;
 
 
-Controllers::Map::Map(Models::Room &room, Models::Samus &samus) : room(room), samus(samus) {
-    this->room = room;
-    this->samus = samus;
-}
+Map::Map(Models::Room &room, Models::Samus &samus) : room(room), samus(samus) {}
 
-void Controllers::Map::changeRooms(Models::Room &room) {
+void Map::changeRooms(Models::Room &room) {
     mapView.destroyTextures(this->room);
     mapView.initializeRoom(room, samus);
     mapView.drawFrame(room, samus);
     this->room = room;
 }
 
-void Controllers::Map::update() {
+void Map::update() {
     mapView.drawFrame(room, samus);
 }
 
-void Controllers::Metroid::moleForce() {
+void Metroid::moleForce() {
     // metroid.force = -MetroidMovement::elasticConstant * metroid.rect.x;
 }
 
-void Controllers::Metroid::acceleration() {
+void Metroid::acceleration() {
     // metroid.acceleration = metroid.force / MetroidCharacteristics::mass;
 }
 
-void Controllers::Metroid::velocity() {
+void Metroid::velocity() {
     // metroid.velocity = metroid.velocity + metroid.acceleration * Physics::time;
 }
 
-void Controllers::Metroid::position() {
+void Metroid::position() {
     // metroid.rect.x = metroid.rect.x + metroid.velocity * Physics::time;
 }
 
-void Controllers::Metroid::uniformMovement() {
+void Metroid::uniformMovement() {
     // implement later
 }
 
-Controllers::Samus::Samus(Models::Samus &samus) : samus(samus) {
-    state = SDL_GetKeyboardState(nullptr);
+Samus::Samus(Models::Samus &samus) : samus(samus) {}
+
+void Samus::jump() {
+
+    // Samus already jumping: do nothing
+    if (samus.state == SamusMovement::jumpingState)
+        return;
+
+    // Samus is morphed: unmorph
+    if (samus.state == SamusMovement::morphedState) {
+        samus.state = SamusMovement::idleState;
+        return;
+    }
+
+    // update samus vertical velocity and state
+    samus.verticalVelocity = SamusMovement::initialVerticalVelocity;
+    samus.state = SamusMovement::jumpingState;
 }
 
+void Samus::lookUp() {
 
-void Controllers::Samus::jumpingAceleration() {
+    // Samus already jumping: do nothing
+    if (samus.state == SamusMovement::idleState)
+        return;
+
+    // update samus state
+    samus.state = SamusMovement::aimingUpState;
+}
+
+void Samus::morph() {
+    // TODO: check if samus has morphing ball and is not morphed
+}
+
+void Samus::moveLeft() {
+    samus.rect.x -= SamusMovement::horizontalStep;
+}
+
+void Samus::moveRight() {
+    samus.rect.x += SamusMovement::horizontalStep;
+}
+
+void Samus::update() {
+    std::string command = samusView.processCommand();
+
+    if (command == Commands::jump) jump();
+    if (command == Commands::lookUp) lookUp();
+    if (command == Commands::morph) morph();
+    if (command == Commands::moveLeft) moveLeft();
+    if (command == Commands::moveRight) moveRight();
+
+    // TODO: update Samus vertical position based on vertical velocity
+}
+
+void Samus::jumpingAceleration() {
     float samusV;
     samusV = samus.verticalVelocity - Physics::gravity * Physics::time;
     samus.verticalVelocity = samusV;
 }
 
-
-void Controllers::Samus::jumpingPosition() {
+void Samus::jumpingPosition() {
     samus.rect.x += samus.verticalVelocity * Physics::time -
                    ( Physics::gravity * Physics::time^2 ) / 2;
-}
-
-void Controllers::Samus::walking() {
-    if (state[SDL_SCANCODE_LEFT])
-        samus.rect.x += 0.1;
-    if (state[SDL_SCANCODE_RIGHT])
-        samus.rect.x -= 0.1;
-}
-
-void Controllers::Samus::update() {
-    SDL_PumpEvents();
-    if(state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_RIGHT])
-        walking();
-    if (state[SDL_SCANCODE_UP]) {
-        jumpingAceleration();
-        jumpingPosition();
-    }
 }

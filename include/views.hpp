@@ -1,6 +1,9 @@
+#ifndef METROID_VIEWS_H
+#define METROID_VIEWS_H
+
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <vector>
 #include "models.hpp"
 
 namespace Views {
@@ -18,4 +21,14 @@ namespace Views {
             ~Map();
     };
 
+    class Samus {
+        private:
+            const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+        public:
+            std::string processCommand();
+    };
+
 }
+
+#endif

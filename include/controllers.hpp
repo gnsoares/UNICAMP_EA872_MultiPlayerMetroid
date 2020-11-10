@@ -11,8 +11,8 @@ namespace Controllers {
 
     class Map {
         private:
-            Models::Room room;
-            Models::Samus samus;
+            Models::Room &room;
+            Models::Samus &samus;
             Views::Map mapView;
 
         public:
@@ -23,7 +23,8 @@ namespace Controllers {
 
     class Metroid {
         private:
-            Models::Metroid metroid;
+            Models::Metroid &metroid;
+
         public:
             Metroid(Models::Metroid &metroid);
             void moleForce();
@@ -35,14 +36,20 @@ namespace Controllers {
 
     class Samus {
         private:
-            const Uint8* state;
-            Models::Samus samus;
+            Models::Samus &samus;
+            Views::Samus samusView;
+
         public:
             Samus(Models::Samus &samus);
+            void jump();
+            void lookUp();
+            void morph();
+            void moveLeft();
+            void moveRight();
+            void update();
+
             void jumpingAceleration();
             void jumpingPosition();
-            void walking();
-            void update();
     };
 }
 

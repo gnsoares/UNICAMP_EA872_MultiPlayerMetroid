@@ -55,6 +55,7 @@ int main() {
     #endif
 
     Models::Samus samus(Screen::width/2, Screen::height/2, 20, 60);
+    Controllers::Samus samusController(samus);
     std::map<std::string, std::string> textureMap = decodeTextures(Room::texturesFile);
     samus.textureFile = textureMap["S"];
     Models::Room testRoom = loadRoom("test", textureMap);
@@ -76,6 +77,7 @@ int main() {
 
         }
 
+        samusController.update();
         map.update();
         SDL_Delay(50);
 
