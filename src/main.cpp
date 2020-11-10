@@ -11,9 +11,9 @@ int main() {
     runTests();
     #endif
 
-    Models::Samus samus(Screen::width/2, Screen::height/2, 20, 60);
+    Models::Samus samus(Screen::width/2, Screen::height/2-77, 20, 60);
     Models::ShotVector bullets;
-    Models::Shot shots (Screen::width/2, Screen::height/2, 1, 2);
+    Models::Shot shots (Screen::width/2, Screen::height/2, 10, 20);
     Controllers::Samus samusController(samus);
     Controllers::Shots shotsController(shots, bullets, samus);
     std::map<std::string, std::string> textureMap = decodeTextures(Room::texturesFile);
@@ -39,6 +39,7 @@ int main() {
 
         samusController.update();
         shotsController.update();
+        map.metroidUpdate();
         map.update();
         SDL_Delay(50);
 

@@ -16,6 +16,10 @@ void ShotVector::updateShot(int rectx, int i){
     bullets.at(i).rect.x = rectx;
 }
 
+void ShotVector::updateShotTexture(SDL_Texture *texture, int i){
+    bullets.at(i).texture = texture;
+}
+
 void ShotVector::eraseShot(int i){
     //delete bullets.at(i);
     bullets.erase(bullets.begin()+i);
@@ -31,6 +35,18 @@ int ShotVector::returnLenghtShot(){
 
 void Room::updateMetroidLife(int hp, int i){
     metroids.at(i).hp = hp;
+}
+
+void Room::updateMetroidForce(int fm, int i){
+    metroids.at(i).force = fm;
+}
+
+void Room::updateMetroidAcc (int a, int i){
+    metroids.at(i).acceleration = a;
+}
+
+void Room::updateMetroidVel (int v, int i){
+    metroids.at(i).velocity = v;
 }
 
 void Room::updateMetroidPosition(int rectx, int i){

@@ -74,16 +74,12 @@ void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector
     }
 
     for (int i=0; i<bullets.returnLenghtShot(); i++){
+        bullets.updateShotTexture(texture, i);
         Models::Shot shot = bullets.returnShotX(i);
-        shot.texture = IMG_LoadTexture(renderer, ("../assets/bullet.png")); 
-        SDL_QueryTexture(shot.texture, nullptr, nullptr, &shot.rect.w, &shot.rect.h);
-        std::cout << "Peguei textura" << std::endl;
+        SDL_QueryTexture(bullets.returnShotX(i).texture, nullptr, nullptr, &shot.rect.w, &shot.rect.h);
+        SDL_RenderCopy(renderer, bullets.returnShotX(i).texture, nullptr, &shot.rect);
     }
 
-    for (int i = 0; i<bullets.returnLenghtShot(); i++){
-        Models::Shot shot = bullets.returnShotX(i);
-        SDL_RenderCopy(renderer, shot.texture, nullptr, &shot.rect);
-    }
     SDL_RenderPresent(renderer);
 }
 

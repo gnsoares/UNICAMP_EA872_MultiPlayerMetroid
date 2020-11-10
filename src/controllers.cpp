@@ -51,15 +51,47 @@ void Map::shotsCollisions(){
 }
 */
 
+void Map::metroidForce(){
+    int metroidNumber = room.returnLenghtMetroid();
+    for(int i = 0; i<metroidNumber; i++){
+        Models::Metroid metroidMole = room.returnMetroid(i);
+        metroidMole.force = -MetroidMovement::elasticConstant * metroidMole.rect.x - MetroidMovement::dampingConstant * metroidMole.velocity;
+        room.updateMetroidForce(metroidMole.force, i);
+    }
+}
+
+void Map::metroidAcc(){
+    int metroidNumber = room.returnLenghtMetroid();
+    for(int i = 0; i<metroidNumber; i++){
+        Models::Metroid metroidMole = room.returnMetroid(i);
+        metroidMole.acceleration = metroidMole.force/MetroidMovement::mass;
+        room.updateMetroidAcc(metroidMole.acceleration, i);
+    }   
+}        
+
+void Map::metroidVel(){
+    int metroidNumber = room.returnLenghtMetroid();
+    for(int i = 0; i<metroidNumber; i++){
+        Models::Metroid metroidMole = room.returnMetroid(i);
+        metroidMole.velocity = metroidMole.velocity + metroidMole.acceleration*Physics::time;
+        room.updateMetroidVel(metroidMole.velocity, i);
+    }
+}
+
 void Map::metroidPosition(){
     int metroidNumber = room.returnLenghtMetroid();
     for(int i = 0; i<metroidNumber; i++){
         Models::Metroid metroidMole = room.returnMetroid(i);
-        metroidMole.force = -MetroidMovement::elasticConstant * metroidMole.rect.x;
-        metroidMole.acceleration = metroidMole.force/MetroidMovement::mass;
-        metroidMole.velocity = metroidMole.velocity + metroidMole.acceleration*Physics::time;
         metroidMole.rect.x = metroidMole.rect.x + metroidMole.velocity * Physics::time;
+        room.updateMetroidPosition(metroidMole.rect.x, i);
     }
+}
+
+void Map::metroidUpdate(){
+    metroidForce();
+    metroidAcc();
+    metroidVel();
+    metroidPosition();
 }
 
 Samus::Samus(Models::Samus &samus) : samus(samus) {}

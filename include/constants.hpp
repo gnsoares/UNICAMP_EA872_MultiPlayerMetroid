@@ -14,10 +14,10 @@ namespace EntityCodes {
 }
 
 namespace MetroidMovement {
-    const int mass = 10;
+    const int mass = 10000;
     const int horizontalStep = 10;
-    const int elasticConstant = 5;
-    const int dampingConstant = 5;
+    const int elasticConstant = 10;
+    const int dampingConstant = 20;
 }
 
 namespace Screen {

@@ -37,8 +37,8 @@ namespace Models {
         using Entity::Entity;
         public:
             int hp = 50;
-            int force = 1;
-            int acceleration = 1;
+            int force = 0;
+            int acceleration = 0;
             int velocity = 1;
     };
 
@@ -68,6 +68,7 @@ namespace Models {
         public:
             void addShot(int rectx, int recty, int rectw, int recth);
             void updateShot(int rectx, int i);
+            void updateShotTexture(SDL_Texture *texture, int i);
             void eraseShot(int i);
             Shot returnShotX(int i);
             int returnLenghtShot();
@@ -102,6 +103,9 @@ namespace Models {
 
             void addMetroid(int rectx, int recty, int rectw, int recth);
             void updateMetroidPosition(int rectx, int i);
+            void updateMetroidForce(int fm, int i);
+            void updateMetroidAcc (int a, int i);
+            void updateMetroidVel (int v, int i);
             void updateMetroidLife(int hp, int i);
             void eraseMetroid(int i);
             Metroid returnMetroid(int i);

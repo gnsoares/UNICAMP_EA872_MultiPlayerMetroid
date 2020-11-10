@@ -21,7 +21,11 @@ namespace Controllers {
             Map(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets);
             void changeRooms(Models::Room &room);
             void update();
+            void metroidForce();
+            void metroidAcc();
+            void metroidVel();
             void metroidPosition();
+            void metroidUpdate();
     };
 
     class Samus {

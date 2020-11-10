@@ -11,6 +11,7 @@ namespace Views {
     class Map {
         private:
             SDL_Renderer *renderer = nullptr;
+            SDL_Texture *texture = IMG_LoadTexture(renderer, "../assets/bullet.png");
 
         public:
             SDL_Window *window = nullptr;
@@ -32,6 +33,7 @@ namespace Views {
     class Shots{
         private:
             const Uint8 *state = SDL_GetKeyboardState(NULL);
+
         public:
             std::string processCommand();
     };
