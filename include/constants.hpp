@@ -36,7 +36,7 @@ namespace SamusMovement {
 }
 
 namespace Shooting{
-    const std::string creatingShot = "shooting";
+    const std::string shootingState = "shooting";
 }
 
 namespace Physics {
@@ -54,7 +54,7 @@ namespace Commands {
     const std::string lookUp = "LKU";
     const std::string morph = "MPH";
     const std::string jump = "JMP";
-    const std::string shooting = "SHT";
+    const std::string shot = "SHT";
 }
 
 

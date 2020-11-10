@@ -60,8 +60,6 @@ namespace Models {
 
     class Shot:public Entity {
         using Entity::Entity;
-        public:
-            std::string state;
     };
 
     class ShotVector{

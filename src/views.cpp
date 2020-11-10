@@ -61,12 +61,6 @@ void Map::initializeRoom(Models::Room &room, Models::Samus &samus, Models::ShotV
         room.metroids[i].texture = IMG_LoadTexture(renderer, ("../assets/" + room.metroids[i].textureFile).c_str());
         SDL_QueryTexture(room.metroids[i].texture, nullptr, nullptr, &room.metroids[i].rect.w, &room.metroids[i].rect.h);
     }
-
-    for (int i=0; i<bullets.returnLenghtShot(); i++){
-        Models::Shot shot = bullets.returnShotX(i);
-        shot.texture = IMG_LoadTexture(renderer, ("../assets/bullet.png")); //AQUI
-        SDL_QueryTexture(shot.texture, nullptr, nullptr, &shot.rect.w, &shot.rect.h);
-    }
 }
 
 void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector &bullets) {
@@ -77,6 +71,18 @@ void Map::drawFrame(Models::Room &room, Models::Samus &samus, Models::ShotVector
     }
     for (int i = 0; i < room.metroids.size(); i++) {
         SDL_RenderCopy(renderer, room.metroids[i].texture, nullptr, &room.metroids[i].rect);
+    }
+
+    for (int i=0; i<bullets.returnLenghtShot(); i++){
+        Models::Shot shot = bullets.returnShotX(i);
+        shot.texture = IMG_LoadTexture(renderer, ("../assets/bullet.png")); 
+        SDL_QueryTexture(shot.texture, nullptr, nullptr, &shot.rect.w, &shot.rect.h);
+        std::cout << "Peguei textura" << std::endl;
+    }
+
+    for (int i = 0; i<bullets.returnLenghtShot(); i++){
+        Models::Shot shot = bullets.returnShotX(i);
+        SDL_RenderCopy(renderer, shot.texture, nullptr, &shot.rect);
     }
     SDL_RenderPresent(renderer);
 }
@@ -111,6 +117,6 @@ std::string Samus::processCommand() {
 std::string Shots::processCommand(){
     SDL_PumpEvents();
 
-    if (state[SDL_SCANCODE_S]) return Commands::shooting;
+    if (state[SDL_SCANCODE_1]) return Commands::shot;
     return "";
 }

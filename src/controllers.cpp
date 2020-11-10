@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include "constants.hpp"
 #include "controllers.hpp"
+#include <iostream>
 using namespace Controllers;
 
 
@@ -128,11 +129,9 @@ void Samus::jumpingPosition() {
 Shots::Shots(Models::Shot &shots, Models::ShotVector &bullet, Models::Samus &samus): shots(shots), bullet(bullet), samus(samus){}
 
 void Shots::saveShotPosition(){
-    if (shots.state == Shooting::creatingShot){
         int initialPositionY = samus.rect.y + samus.rect.h/2;
         int initialPositionX = samus.rect.x + samus.rect.w/2;
         bullet.addShot(initialPositionX, initialPositionY, 1, 2);
-    }
 }
 
 void Shots::updateShotPosition(){
@@ -147,6 +146,8 @@ void Shots::updateShotPosition(){
 void Shots::update(){
     std::string command = shotsView.processCommand();
 
-    if (command == Commands::shooting) saveShotPosition();
+    if (command == Commands::shot){
+        saveShotPosition();
+    }
     updateShotPosition();
 }
