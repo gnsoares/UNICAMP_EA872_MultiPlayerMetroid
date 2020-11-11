@@ -66,21 +66,26 @@ int main() {
                 break;
 
         }
+        /*for (int i = 0; i < testRoom.metroids.size(); i++) {
+            std::cout << "(x = " << testRoom.metroids[i].rect.x << ", y = " << testRoom.metroids[i].rect.y << ") \n";
+            std::cout << "(vx = " << testRoom.metroids[i].vx << ", vy = " << testRoom.metroids[i].vy << ") \n";
+            std::cout << "(ax = " << testRoom.metroids[i].ax << ", ay = " << testRoom.metroids[i].ay << ") \n\n";
+        }*/
 
         SDL_RenderClear(renderer);
 
-        samusController.update();
+        samusController.update(testRoom.blocks, testRoom.doors, testRoom.metroids);
         shotsController.update(
             samus.rect.x + samus.rect.w/2,
             samus.rect.y + samus.rect.h/2,
             2 * samus.xSight * SamusConstants::horizontalStep,
             2 * samus.ySight * SamusConstants::horizontalStep
         );
-        map.update();
+        map.update(shots);
 
         SDL_RenderPresent(renderer);
 
-        SDL_Delay(150);
+        SDL_Delay(50);
 
     }
 
