@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <iostream>
 #include <vector>
 #include <SDL2/SDL.h>
 #include "constants.hpp"
@@ -6,7 +7,8 @@
 #include "utils.hpp"
 using namespace Controllers;
 
-#include <iostream>
+
+/* MAP IMPLEMENTATION */
 Map::Map(Models::Room &room, Views::Map &mapView)
     : room(room), mapView(mapView) {
     this->mapView.initializeRoom(this->room);
@@ -21,9 +23,17 @@ void Map::changeRooms(Models::Room &room) {
 }
 
 void Map::damageMetroid(Models::Metroid &metroid) {
+    
+    // set cooldown to avoid repeated damage
     damageCooldown = 5;
+
+    // decrease hp
     metroid.hp -= SamusConstants::shotDamage;
+
+    // negative hp: set as minimum
     if (metroid.hp < 0) metroid.hp = 0;
+    
+    // debug damage
     std::cout << "Metroid damage " << metroid.hp << "\n";
 }
 
@@ -32,54 +42,65 @@ void Map::update(std::vector<Models::Shot> shots) {
     for (int i = 0; i < room.metroids.size(); i++) {
         int prevX = room.metroids[i].rect.x, prevY = room.metroids[i].rect.y;
 
+        // S2 = S1 + V*t + a*t^2/2
         room.metroids[i].rect.x += room.metroids[i].vx + room.metroids[i].ax / 2;
         room.metroids[i].rect.y += room.metroids[i].vy + room.metroids[i].ay / 2;
 
+        // a = -k*x/m
         room.metroids[i].ax = - MetroidConstants::elasticConstantX * (room.metroids[i].rect.x - room.metroids[i].xi) / MetroidConstants::mass;
         room.metroids[i].ay = - MetroidConstants::elasticConstantY * (room.metroids[i].rect.y - room.metroids[i].yi) / MetroidConstants::mass;
 
+        // V2 = V1 + a*t + random factor
         room.metroids[i].vx += room.metroids[i].ax + (rand() % 15 - 7);
         room.metroids[i].vy += room.metroids[i].ay + (rand() % 15 - 7);
-
-        // std::cout << "(x = " << room.metroids[i].rect.x << ", y = " << room.metroids[i].rect.y << ") \n";
-        // std::cout << "(vx = " << room.metroids[i].vx << ", vy = " << room.metroids[i].vy << ") \n";
-        // std::cout << "(ax = " << room.metroids[i].ax << ", ay = " << room.metroids[i].ay << ") \n\n";
 
         // check collision with blocks
         for (int j = 0; j < room.blocks.size(); j++) {
 
             if (checkCollision(room.blocks[j].rect, room.metroids[i].rect)) {
 
-                // collided with floor: set feet at the floor
+                // collided with floor
                 if (room.metroids[i].rect.y + room.metroids[i].rect.h >= room.blocks[j].rect.y &&
                     prevY + room.metroids[i].rect.h <= room.blocks[j].rect.y) {
+
+                    // set feet at the top of the block
                     room.metroids[i].rect.y = room.blocks[j].rect.y - room.metroids[i].rect.h;
-                    room.metroids[i].ay -= 5;
-                    room.metroids[i].yi -= 5;
+
+                    // set acceleration away from floor and set new resting position
+                    room.metroids[i].ay -= 5; room.metroids[i].yi -= 5;
                 }
 
                 // collided with ceiling: set head at the ceiling
                 else if (room.blocks[j].rect.y + room.blocks[j].rect.h >= room.metroids[i].rect.y &&
                          room.blocks[j].rect.y + room.blocks[j].rect.h <= prevY) {
+
+                    // set head at the bottomm of the block
                     room.metroids[i].rect.y = room.blocks[j].rect.y + room.blocks[j].rect.h;
-                    room.metroids[i].ay += 5;
-                    room.metroids[i].yi -= 5;
+
+                    // set acceleration away from ceiling and set new resting position
+                    room.metroids[i].ay += 5; room.metroids[i].yi -= 5;
                 }
 
                 // collided with right wall: set right side at the wall
                 else if (room.metroids[i].rect.x + room.metroids[i].rect.w >= room.blocks[j].rect.x &&
                          prevX + room.metroids[i].rect.w <= room.blocks[j].rect.x) {
+
+                    // set right side at the left side of the block
                     room.metroids[i].rect.x = room.blocks[j].rect.x - room.metroids[i].rect.w;
-                    room.metroids[i].ax -= 5;
-                    room.metroids[i].xi -= 5;
+
+                    // set acceleration away from wall and set new resting position
+                    room.metroids[i].ax -= 5; room.metroids[i].xi -= 5;
                 }
 
                 // collided with left wall: set left side at the wall
                 else if (room.blocks[j].rect.x + room.blocks[j].rect.w >= room.metroids[i].rect.x &&
                          room.blocks[j].rect.x + room.blocks[j].rect.w <= prevX) {
+
+                    // set left side at the right side of the block
                     room.metroids[i].rect.x = room.blocks[j].rect.x + room.blocks[j].rect.w;
-                    room.metroids[i].ax += 5;
-                    room.metroids[i].xi -= 5;
+
+                    // set acceleration away from wall and set new resting position
+                    room.metroids[i].ax += 5; room.metroids[i].xi -= 5;
                 }
             }
         }
@@ -92,33 +113,45 @@ void Map::update(std::vector<Models::Shot> shots) {
                 // collided with floor: set feet at the floor
                 if (room.metroids[i].rect.y + room.metroids[i].rect.h >= room.doors[j].rect.y &&
                     prevY + room.metroids[i].rect.h <= room.doors[j].rect.y) {
+
+                    // set feet at the top of the block
                     room.metroids[i].rect.y = room.doors[j].rect.y - room.metroids[i].rect.h;
-                    room.metroids[i].ay -= 5;
-                    room.metroids[i].yi -= 5;
+
+                    // set acceleration away from floor and set new resting position
+                    room.metroids[i].ay -= 5; room.metroids[i].yi -= 5;
                 }
 
                 // collided with ceiling: set head at the ceiling
                 else if (room.doors[j].rect.y + room.doors[j].rect.h >= room.metroids[i].rect.y &&
                          room.doors[j].rect.y + room.doors[j].rect.h <= prevY) {
+
+                    // set head at the bottomm of the block
                     room.metroids[i].rect.y = room.doors[j].rect.y + room.doors[j].rect.h;
-                    room.metroids[i].ay += 5;
-                    room.metroids[i].yi += 5;
+
+                    // set acceleration away from ceiling and set new resting position
+                    room.metroids[i].ay += 5; room.metroids[i].yi += 5;
                 }
 
                 // collided with right wall: set right side at the wall
                 else if (room.metroids[i].rect.x + room.metroids[i].rect.w >= room.doors[j].rect.x &&
                          prevX + room.metroids[i].rect.w <= room.doors[j].rect.x) {
+
+                    // set right side at the left side of the block
                     room.metroids[i].rect.x = room.doors[j].rect.x - room.metroids[i].rect.w;
-                    room.metroids[i].ax -= 5;
-                    room.metroids[i].xi -= 5;
+
+                    // set acceleration away from wall and set new resting position
+                    room.metroids[i].ax -= 5; room.metroids[i].xi -= 5;
                 }
 
                 // collided with left wall: set left side at the wall
                 else if (room.doors[j].rect.x + room.doors[j].rect.w >= room.metroids[i].rect.x &&
                          room.doors[j].rect.x + room.doors[j].rect.w <= prevX) {
+
+                    // set left side at the right side of the block
                     room.metroids[i].rect.x = room.doors[j].rect.x + room.doors[j].rect.w;
-                    room.metroids[i].ax += 5;
-                    room.metroids[i].xi += 5;
+
+                    // set acceleration away from wall and set new resting position
+                    room.metroids[i].ax += 5; room.metroids[i].xi += 5;
                 }
             }
         }
@@ -126,22 +159,33 @@ void Map::update(std::vector<Models::Shot> shots) {
         // check collision with shots
         if (damageCooldown == 0) {
             for (int j = 0; j < shots.size(); j++) {
+
+                // metroid collided with shot: take damage
                 if (checkCollision(shots[j].rect, room.metroids[i].rect)) {
                     damageMetroid(room.metroids[i]);
+
+                    // metroid died: remove it
                     if (room.metroids[i].hp == 0){
                         room.metroids.erase(room.metroids.begin()+i);
                     }
+
+                    // no need to check other shots
                     break;
                 }
             }
         }
     }
 
+    // decrease cooldown
     if (damageCooldown > 0) damageCooldown--;
 
+    // render map
     mapView.render(room);
 }
+/* END OF MAP IMPLEMENTATION */
 
+
+/* SAMUS IMPLEMENTATION */
 Samus::Samus(Models::Samus &samus, Views::Samus &samusView)
     : samus(samus), samusView(samusView) {
     this->samusView.loadTexture(this->samus);
@@ -149,9 +193,17 @@ Samus::Samus(Models::Samus &samus, Views::Samus &samusView)
 }
 
 void Samus::damage() {
+    
+    // set cooldown to avoid repeated damage
     damageCooldown = 5;
+
+    // decrease hp
     samus.hp -= MetroidConstants::damage;
+
+    // negative hp: set as minimum
     if (samus.hp < 0) samus.hp = 0;
+
+    // debug damage
     std::cout << "Samus damage " << samus.hp << "\n";
 }
 
@@ -163,6 +215,8 @@ void Samus::jump() {
 
     // update samus vertical velocity and state
     samus.vy = SamusConstants::jumpVy;
+
+    // set Samus' state
     samus.isJumping = true;
     samus.isFalling = false;
 }
@@ -182,26 +236,37 @@ void Samus::lookUp() {
 
 void Samus::morph() {
 
+    // Samus is in the air: look down
     if (samus.isJumping || samus.isFalling) {
         samus.xSight = 0;
         samus.ySight = 1;
         return;
     }
 
+    // Samus in the ground: morph
     samus.xSight = 0;
     samus.ySight = 0;
+
     // TODO: check if samus has morphing ball and is not morphed
 }
 
 void Samus::moveLeft() {
+
+    // look left
     samus.xSight = -1;
     samus.ySight = 0;
+
+    // walk left
     samus.rect.x -= SamusConstants::horizontalStep;
 }
 
 void Samus::moveRight() {
+
+    // look right
     samus.xSight = 1;
     samus.ySight = 0;
+
+    // walk right
     samus.rect.x += SamusConstants::horizontalStep;
 }
 
@@ -224,35 +289,54 @@ void Samus::update(std::vector<Models::Block> blocks, std::vector<Models::Door> 
     // set new vertical velocity
     samus.vy += SamusConstants::gravity;
 
+    // not negative velocity: set Samus' state
+    if (samus.vy >= 0) samus.isFalling = true;
+
     // check collision with blocks
     for (int i = 0; i < blocks.size(); i++) {
         if (checkCollision(blocks[i].rect, samus.rect)) {
 
-            // collided with floor: set feet at the floor
+            // collided with floor
             if (samus.rect.y + samus.rect.h >= blocks[i].rect.y &&
                 prevY + samus.rect.h <= blocks[i].rect.y) {
+
+                // set feet at the top of the block
                 samus.rect.y = blocks[i].rect.y - samus.rect.h;
+
+                // update Samus' state
                 samus.isJumping = samus.isFalling = false;
             }
 
-            // collided with ceiling: set head at the ceiling
+            // collided with ceiling
             else if (blocks[i].rect.y + blocks[i].rect.h >= samus.rect.y &&
                 blocks[i].rect.y + blocks[i].rect.h <= prevY) {
+
+                // set head at the bottomm of the block
                 samus.rect.y = blocks[i].rect.y + blocks[i].rect.h;
+
+                // update Samus' state
                 samus.isFalling = true;
             }
 
-            // collided with right wall: set right side at the wall
+            // collided with right wall
             else if (samus.rect.x + samus.rect.w >= blocks[i].rect.x &&
                 prevX + samus.rect.w <= blocks[i].rect.x) {
+
+                // set right side at the left side of the block
                 samus.rect.x = blocks[i].rect.x - samus.rect.w;
+
+                // update Samus' state
                 samus.isFalling = true;
             }
 
-            // collided with left wall: set left side at the wall
+            // collided with left wall
             else if (blocks[i].rect.x + blocks[i].rect.w >= samus.rect.x &&
                 blocks[i].rect.x + blocks[i].rect.w <= prevX) {
+
+                // set left side at the right side of the block
                 samus.rect.x = blocks[i].rect.x + blocks[i].rect.w;
+
+                // update Samus' state
                 samus.isFalling = true;
             }
 
@@ -265,31 +349,47 @@ void Samus::update(std::vector<Models::Block> blocks, std::vector<Models::Door> 
     for (int i = 0; i < doors.size(); i++) {
         if (checkCollision(doors[i].rect, samus.rect)) {
 
-            // collided with floor: set feet at the floor
+            // collided with floor
             if (samus.rect.y + samus.rect.h >= doors[i].rect.y &&
                 prevY + samus.rect.h <= doors[i].rect.y) {
+
+                // set feet at the top of the block
                 samus.rect.y = doors[i].rect.y - samus.rect.h;
+
+                // update Samus' state
                 samus.isJumping = samus.isFalling = false;
             }
 
-            // collided with ceiling: set head at the ceiling
+            // collided with ceiling
             else if (doors[i].rect.y + doors[i].rect.h >= samus.rect.y &&
                 doors[i].rect.y + doors[i].rect.h <= prevY) {
+
+                // set head at the bottomm of the block
                 samus.rect.y = doors[i].rect.y + doors[i].rect.h;
+
+                // update Samus' state
                 samus.isFalling = true;
             }
 
-            // collided with right wall: set right side at the wall
+            // collided with right wall
             else if (samus.rect.x + samus.rect.w >= doors[i].rect.x &&
                 prevX + samus.rect.w <= doors[i].rect.x) {
+
+                // set right side at the left side of the block
                 samus.rect.x = doors[i].rect.x - samus.rect.w;
+
+                // update Samus' state
                 samus.isFalling = true;
             }
 
-            // collided with left wall: set left side at the wall
+            // collided with left wall
             else if (doors[i].rect.x + doors[i].rect.w >= samus.rect.x &&
                 doors[i].rect.x + doors[i].rect.w <= prevX) {
+
+                // set left side at the right side of the block
                 samus.rect.x = doors[i].rect.x + doors[i].rect.w;
+
+                // update Samus' state
                 samus.isFalling = true;
             }
 
@@ -301,42 +401,62 @@ void Samus::update(std::vector<Models::Block> blocks, std::vector<Models::Door> 
     // check collision with blocks
     if (damageCooldown == 0) {
         for (int i = 0; i < metroids.size(); i++) {
+
+            // Samus collided with a Metroid: take damage
             if (checkCollision(metroids[i].rect, samus.rect)) {
                 damage();
+
+                // no need to check more than one metroid
                 break;
             }
         }
     }
 
+    // decrease damage cooldown
     if (damageCooldown > 0) damageCooldown--;
 
+    // render Samus
     samusView.render(samus);
 }
+/* END OF SAMUS IMPLEMENTATION */
 
+
+/* SHOTS IMPLEMENTATION */
 Shots::Shots(std::vector<Models::Shot> &shots, Views::Shots &shotsView)
     : shots(shots), shotsView(shotsView) {}
 
 void Shots::createShot(int x, int y, int vx, int vy) {
+
+    // shot cooldown is not zero: block shot creation
     if (shotCooldown != 0) return;
+
+    // create shot, load its texture and add to vector
     Models::Shot shot(x, y, vx, vy);
     shotsView.loadTexture(shot);
     shots.push_back(shot);
+
+    // reset shot cooldown to avoid shot flooding
     shotCooldown = 10;
 }
 
 void Shots::update(int x, int y, int vx, int vy) {
 
+    // process user command
     std::string command = shotsView.processCommand();
 
+    // received command to shoot: create shot
     if (command == Commands::shot) createShot(x, y, vx, vy);
 
+    // decrease shot cooldown
     if (shotCooldown > 0) shotCooldown--;
 
+    // update position
     for (int i = 0; i < shots.size(); i++) {
         shots[i].rect.x += shots[i].vx;
         shots[i].rect.y += shots[i].vy;
     }
 
+    // if there is at least one shot and the first exited the window: remove it
     while (shots.size() > 0 && (
            shots[0].rect.x <= 0 ||
            shots[0].rect.y <= 0 ||
@@ -345,5 +465,7 @@ void Shots::update(int x, int y, int vx, int vy) {
           ))
         shots.erase(shots.begin());
 
+    // render shots
     shotsView.render(shots);
 }
+/* END OF SHOTS IMPLEMENTATION */

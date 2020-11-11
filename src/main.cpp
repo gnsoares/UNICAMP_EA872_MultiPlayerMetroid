@@ -1,54 +1,26 @@
-#define DEBUG 0
-
 #include "constants.hpp"
 #include "controllers.hpp"
 #include "models.hpp"
 #include "utils.hpp"
 
-#include <iostream>
-#if DEBUG
-void runTests() {
-    Models::Samus samus(5, 7);
-    Models::Metroid metroid(6, 3);
-
-    std::cout << "Samus e Metroid devem colidir" << std::endl;
-    std::cout << "Estao colidindo? " << checkCollision(samus.rect, metroid.rect) << std::endl;
-
-    std::cout << "Testando importacao de constantes" << std::endl;
-    std::cout << "Passo horizontal da Samus " << SamusConstants::horizontalStep << std::endl;
-
-    std::cout << "Testando criação de salas" << std::endl;
-    Models::Room testRoom = loadRoom("test");
-    std::cout << "Blocos: ";
-    for (int i = 0; i < testRoom.blocks.size(); i++) {
-        std::cout << "(x = " << testRoom.blocks[i].rect.x << ", y = " << testRoom.blocks[i].rect.y << ") ";
-    }
-    std::cout << std::endl;
-    std::cout << "Portas: ";
-    for (int i = 0; i < testRoom.doors.size(); i++) {
-        std::cout << "(x = " << testRoom.doors[i].rect.x << ", y = " << testRoom.doors[i].rect.y << ") ";
-    }
-    std::cout << std::endl;
-}
-#endif
 
 int main() {
 
-    #if DEBUG
-    runTests();
-    #endif
-
+    // SDL visualization variables
     SDL_Window *window = loadWindow();
     SDL_Renderer *renderer = loadRenderer(window);
 
+    // Samus
     Models::Samus samus(Screen::width/2, Screen::height/2);
     Views::Samus samusView(window, renderer);
     Controllers::Samus samusController(samus, samusView);
 
+    // Shots
     std::vector<Models::Shot> shots;
     Views::Shots shotsView(window, renderer);
     Controllers::Shots shotsController(shots, shotsView);
 
+    // Map
     Models::Room testRoom = loadRoom("test");
     Views::Map mapView(window, renderer);
     Controllers::Map map(testRoom, mapView);
@@ -66,14 +38,11 @@ int main() {
                 break;
 
         }
-        /*for (int i = 0; i < testRoom.metroids.size(); i++) {
-            std::cout << "(x = " << testRoom.metroids[i].rect.x << ", y = " << testRoom.metroids[i].rect.y << ") \n";
-            std::cout << "(vx = " << testRoom.metroids[i].vx << ", vy = " << testRoom.metroids[i].vy << ") \n";
-            std::cout << "(ax = " << testRoom.metroids[i].ax << ", ay = " << testRoom.metroids[i].ay << ") \n\n";
-        }*/
 
+        // clear scene
         SDL_RenderClear(renderer);
 
+        // update all members
         samusController.update(testRoom.blocks, testRoom.doors, testRoom.metroids);
         shotsController.update(
             samus.rect.x + samus.rect.w/2,
@@ -83,12 +52,15 @@ int main() {
         );
         map.update(shots);
 
+        // render scene
         SDL_RenderPresent(renderer);
 
+        // control FPS
         SDL_Delay(50);
 
     }
 
+    // stop SDL
     unloadSDL(window, renderer);
 
     return 0;
