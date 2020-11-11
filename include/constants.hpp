@@ -3,15 +3,27 @@
 
 #include <string>
 
+namespace Entities {
+    class Entity {
+        public:
+            char codeChar;
+            std::string code;
+            std::string textureFileName;
+            Entity(std::string code, std::string textureFileName) {
+                this->code = code;
+                this->codeChar = code[0];
+                this->textureFileName = textureFileName;
+            }
+    };
 
-namespace EntityCodes {
-    const char block = '#';
-    const char door = 'D';
-    const char empty = ' ';
-    const char metroid = 'X';
-    const char morphingball = 'B';
-    const char motherbrain = 'M';
-    const char samus = 'S';
+    const Entity block("#", "block.jpg");
+    const Entity door("D", "door.png");
+    const Entity empty(" ", "");
+    const Entity metroid("X", "metroid.png");
+    const Entity morphingball("B", "morphinball.png");
+    const Entity motherbrain("M", "motherbrain.png");
+    const Entity samus("S", "samus.png");
+    const Entity shot("", "bullet.png");
 }
 
 namespace MetroidMovement {
@@ -40,10 +52,6 @@ namespace SamusConstants {
 namespace Physics {
     const int gravity = 2;
     const int time = 1;
-}
-
-namespace Room {
-    const std::string texturesFile = "texture_filenames.txt";
 }
 
 namespace Commands {
