@@ -1,4 +1,0 @@
-X metroid.png
-S samus.png
-# block.jpg
-D door.png

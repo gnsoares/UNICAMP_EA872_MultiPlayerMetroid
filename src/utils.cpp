@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <cstdio>
+#include <iostream>
 #include <map>
 #include <fstream>
 #include <vector>
@@ -23,25 +24,7 @@ bool checkCollision(SDL_Rect rect1, SDL_Rect rect2) {
     return xOverlap && yOverlap;
 }
 
-std::map<std::string, std::string> decodeTextures(std::string name) {
-    std::map<std::string, std::string> map;
-    std::ifstream texturesFile("../doc/" + name, std::ios::in);
-    std::string code, fileName;
-
-    // line until the space is the entity code
-    while (getline(texturesFile, code, ' ')) {
-
-        // line until line break is the texture file name
-        getline(texturesFile, fileName);
-
-        // register the pair entity code - texture file name
-        map[code] = fileName;
-    }
-
-    return map;
-}
-
-Models::Room loadRoom(std::string name, std::map<std::string, std::string> textureMap) {
+Models::Room loadRoom(std::string name) {
     int c, x = 0, y = 0;
     Models::Room room;
     std::string path = "../doc/rooms/" + name + ".room", width, height, code;
@@ -59,46 +42,38 @@ Models::Room loadRoom(std::string name, std::map<std::string, std::string> textu
         c = getc(roomFile);
         code = c;
 
+        // char belongs to the line that defines room size: ignore
+        if ((c >= '0' && c <= '9') || c == 'x' || c == '\n') {
+            continue;
+        }
+
         // reached room width: go to next line
         if (x >= std::stoi(width)) {
             x = 0; y += 20;
         }
 
-        // entity is empty or samus: do nothing
-        if (c == EntityCodes::empty || c == EntityCodes::samus) {
-        }
-
         // entity is a block: create block and add it to room
-        else if (c == EntityCodes::block) {
-            Models::Block block(x, y, 0, 0);
-            block.textureFile = textureMap[code];
+        if (c == Entities::block.codeChar) {
+            Models::Block block(x, y);
             room.blocks.push_back(block);
 
         // entity is door: create door and add it to room
-        } else if (c == EntityCodes::door) {
-            Models::Door door(x, y, 0, 0);
-            door.textureFile = textureMap[code];
+        } else if (c == Entities::door.codeChar) {
+            Models::Door door(x, y);
             room.doors.push_back(door);
 
         // entity is metroid: create metroid and add it to room
-        } else if (c == EntityCodes::metroid) {
-            Models::Metroid metroid(x, y, 0, 0);
-            metroid.textureFile = textureMap[code];
+        } else if (c == Entities::metroid.codeChar) {
+            Models::Metroid metroid(x, y);
             room.metroids.push_back(metroid);
 
         // entity is morphing ball: create morphing ball and add it to room
-        } else if (c == EntityCodes::morphingball) {
-            room.morphingball = new Models::MorphingBall(x, y, 0, 0);
-            room.morphingball->textureFile = textureMap[code];
+        } else if (c == Entities::morphingball.codeChar) {
+            room.morphingball = new Models::MorphingBall(x, y);
 
         // entity is motherbrain: create motherbrain and add it to room
-        } else if (c == EntityCodes::motherbrain) {
-            room.motherbrain = new Models::MotherBrain(x, y, 0, 0);
-            room.motherbrain->textureFile = textureMap[code];
-
-        // entity is not supported: ignore
-        } else {
-            continue;
+        } else if (c == Entities::motherbrain.codeChar) {
+            room.motherbrain = new Models::MotherBrain(x, y);
         }
 
         // increase current position
@@ -106,4 +81,52 @@ Models::Room loadRoom(std::string name, std::map<std::string, std::string> textu
     }
 
     return room;
+}
+
+SDL_Window *loadWindow() {
+    SDL_Window *window;
+
+    // create window
+    window = SDL_CreateWindow(
+        "Metroid Clone",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        Screen::width,
+        Screen::height,
+        SDL_WINDOW_SHOWN
+    );
+
+    // window creation failed: print error
+    if (window == nullptr) {
+        std::cout << SDL_GetError();
+        SDL_Quit();
+    }
+
+    return window;
+}
+
+SDL_Renderer *loadRenderer(SDL_Window *window) {
+    SDL_Renderer *renderer;
+
+    // create renderer
+    renderer = SDL_CreateRenderer(
+        window,
+        -1,
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+    );
+
+    // renderer creation failed: print error
+    if (renderer == nullptr) {
+        SDL_DestroyWindow(window);
+        std::cout << SDL_GetError();
+        SDL_Quit();
+    }
+
+    return renderer;
+}
+
+void unloadSDL(SDL_Window *window, SDL_Renderer *renderer) {
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }

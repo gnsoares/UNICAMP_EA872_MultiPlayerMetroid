@@ -1,83 +1,73 @@
-#include <iostream>
-#include <memory>
 #include <SDL2/SDL.h>
+#include <vector>
 #include "constants.hpp"
 #include "controllers.hpp"
 using namespace Controllers;
 
 
-Map::Map(Models::Room &room, Models::Samus &samus) : room(room), samus(samus) {}
+Map::Map(Models::Room &room, Views::Map &mapView)
+    : room(room), mapView(mapView) {
+    this->mapView.initializeRoom(this->room);
+    this->mapView.render(this->room);
+}
 
 void Map::changeRooms(Models::Room &room) {
     mapView.destroyTextures(this->room);
-    mapView.initializeRoom(room, samus);
-    mapView.drawFrame(room, samus);
+    mapView.initializeRoom(room);
+    mapView.render(room);
     this->room = room;
 }
 
 void Map::update() {
-    mapView.drawFrame(room, samus);
+    mapView.render(room);
 }
 
-void Metroid::moleForce() {
-    // metroid.force = -MetroidMovement::elasticConstant * metroid.rect.x;
+Samus::Samus(Models::Samus &samus, Views::Samus &samusView)
+    : samus(samus), samusView(samusView) {
+    this->samusView.loadTexture(this->samus);
+    this->samusView.render(this->samus);
 }
-
-void Metroid::acceleration() {
-    // metroid.acceleration = metroid.force / MetroidCharacteristics::mass;
-}
-
-void Metroid::velocity() {
-    // metroid.velocity = metroid.velocity + metroid.acceleration * Physics::time;
-}
-
-void Metroid::position() {
-    // metroid.rect.x = metroid.rect.x + metroid.velocity * Physics::time;
-}
-
-void Metroid::uniformMovement() {
-    // implement later
-}
-
-Samus::Samus(Models::Samus &samus) : samus(samus) {}
 
 void Samus::jump() {
 
     // Samus already jumping: do nothing
-    if (samus.state == SamusMovement::jumpingState)
+    if (samus.state == SamusConstants::jumpingState)
         return;
-
-    // Samus is morphed: unmorph
-    if (samus.state == SamusMovement::morphedState) {
-        samus.state = SamusMovement::idleState;
-        return;
-    }
 
     // update samus vertical velocity and state
-    samus.verticalVelocity = SamusMovement::initialVerticalVelocity;
-    samus.state = SamusMovement::jumpingState;
+    samus.vy = SamusConstants::jumpVy;
+    samus.state = SamusConstants::jumpingState;
 }
 
 void Samus::lookUp() {
 
-    // Samus already jumping: do nothing
-    if (samus.state == SamusMovement::idleState)
+    // Samus is morphed: unmorph
+    if (samus.state == SamusConstants::morphedState) {
+        samus.state = SamusConstants::idleState;
         return;
+    }
 
-    // update samus state
-    samus.state = SamusMovement::aimingUpState;
+    // update samus sight
+    samus.ySight = -1;
+    samus.xSight = 0;
 }
 
 void Samus::morph() {
+    samus.xSight = 0;
+    samus.ySight = 0;
     // TODO: check if samus has morphing ball and is not morphed
 }
 
 void Samus::moveLeft() {
-    samus.rect.x -= SamusMovement::horizontalStep;
+    samus.xSight = -1;
+    samus.ySight = 0;
+    samus.rect.x -= SamusConstants::horizontalStep;
 }
 
 void Samus::moveRight() {
-    samus.rect.x += SamusMovement::horizontalStep;
+    samus.xSight = 1;
+    samus.ySight = 0;
+    samus.rect.x += SamusConstants::horizontalStep;
 }
 
 void Samus::update() {
@@ -90,15 +80,46 @@ void Samus::update() {
     if (command == Commands::moveRight) moveRight();
 
     // TODO: update Samus vertical position based on vertical velocity
+
+    samusView.render(samus);
 }
 
 void Samus::jumpingAceleration() {
-    float samusV;
-    samusV = samus.verticalVelocity - Physics::gravity * Physics::time;
-    samus.verticalVelocity = samusV;
+    samus.vy -= Physics::gravity * Physics::time;
 }
 
 void Samus::jumpingPosition() {
-    samus.rect.x += samus.verticalVelocity * Physics::time -
-                   ( Physics::gravity * Physics::time^2 ) / 2;
+    samus.rect.y -= samus.vy * Physics::time -
+                   ( Physics::gravity * Physics::time * Physics::time ) / 2;
+}
+
+Shots::Shots(std::vector<Models::Shot> &shots, Views::Shots &shotsView)
+    : shots(shots), shotsView(shotsView) {}
+
+void Shots::createShot(int x, int y, int vx, int vy) {
+    Models::Shot shot(x, y, vx, vy);
+    shotsView.loadTexture(shot);
+    shots.push_back(shot);
+}
+
+void Shots::update(int x, int y, int vx, int vy) {
+
+    std::string command = shotsView.processCommand();
+
+    if (command == Commands::shot) createShot(x, y, vx, vy);
+
+    for (int i = 0; i < shots.size(); i++) {
+        shots[i].rect.x += shots[i].vx;
+        shots[i].rect.y += shots[i].vy;
+    }
+
+    while (shots.size() > 0 && (
+           shots[0].rect.x <= 0 ||
+           shots[0].rect.y <= 0 ||
+           shots[0].rect.x >= Screen::width ||
+           shots[0].rect.y >= Screen::height
+          ))
+        shots.erase(shots.begin());
+
+    shotsView.render(shots);
 }
