@@ -38,6 +38,7 @@ void Map::initializeRoom(Models::Room &room) {
 }
 
 void Map::render(Models::Room &room) {
+
     // render all blocks
     for (int i = 0; i < room.blocks.size(); i++) {
         SDL_RenderCopy(renderer, room.blocks[i].texture, nullptr, &room.blocks[i].rect);

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
+#include "constants.hpp"
 
 
 namespace Models {
@@ -23,12 +24,13 @@ namespace Models {
     class Samus:public Entity {
         using Entity::Entity;
         public:
-            int hp = 100; /*!< Samus' hp */
-            int missileCounter;
-            int mass;
-            int vy; /*!< Samus' velocity */
+            int hp = SamusConstants::initialHP; /*!< Samus' hp */
+            int missileCounter = 0;
+            int vy = 0; /*!< Samus' velocity */
             int xSight = 1; /*!< where Samus is looking */
             int ySight = 0; /*!< where Samus is looking */
+            bool isJumping = false;
+            bool isFalling = false;
             std::string state; /*!< Samus' state */
 
     };
@@ -36,10 +38,14 @@ namespace Models {
     class Metroid:public Entity {
         using Entity::Entity;
         public:
-            int hp = 50; /*!< Metroid's hp */
-            int force = 0; /*!< Metroid's force (movement)*/
-            int acceleration = 0; /*!< Metroid's initial acceleration */
-            int velocity = 1; /*!< Metroid's initial velocity*/
+            explicit Metroid(int x, int y);
+            int hp = MetroidConstants::initialHP; /*!< Metroid's hp */
+            int xi;
+            int yi;
+            int ax = 0; /*!< Metroid's initial acceleration */
+            int ay = 0; /*!< Metroid's initial acceleration */
+            int vx = MetroidConstants::maxVx; /*!< Metroid's initial velocity*/
+            int vy = MetroidConstants::maxVy; /*!< Metroid's initial velocity*/
     };
 
     class MotherBrain:public Entity {

@@ -26,32 +26,33 @@ namespace Entities {
     const Entity shot("", "bullet.png");
 }
 
-namespace MetroidMovement {
-    const int mass = 10000;
-    const int horizontalStep = 10;
-    const int elasticConstant = 100;
-    const int dampingConstant = 20;
+namespace MetroidConstants {
+    const int mass = 1000;
+    const int elasticConstantX = 500;
+    const int elasticConstantY = 300;
+    const int maxVx = 9;
+    const int maxVy = 6;
+
+    const int initialHP = 20;
+    const int damage = 10;
 }
 
 namespace Screen {
     const int width = 640;
-    const int height = 480;
+    const int height = 240;
 }
 
 namespace SamusConstants {
-
     const int horizontalStep = 10;
-    const int jumpVy = 10;
+    const int jumpVy = -18;
+    const int gravity = 2;
+
+    const int initialHP = 100;
+    const int shotDamage = 5;
 
     const std::string idleState = "idle";
-    const std::string jumpingState = "jumping";
     const std::string morphedState = "morphed";
     const std::string runningState = "running";
-}
-
-namespace Physics {
-    const int gravity = 2;
-    const int time = 1;
 }
 
 namespace Commands {
