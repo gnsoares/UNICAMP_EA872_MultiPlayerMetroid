@@ -29,8 +29,7 @@ Models::Room loadRoom(std::string name);
  * Creates windows and, if window creation fails,
  * prints erro on the screen
  * 
- * \param does no have any paramethers
- * \return window
+ * \return window pointer
  */
 SDL_Window *loadWindow();
 
@@ -39,16 +38,16 @@ SDL_Window *loadWindow();
  * Creates renderer and, if renderer creation fails,
  * prints error on the screen
  * 
- * \param pointer to window
- * \return renderer
+ * \param window pointer to window
+ * \return renderer pointer
  */
 SDL_Renderer *loadRenderer(SDL_Window *window);
 
 
 /*! \brief Desallocates renderer and window
  * 
- * \param pointer to window
- * \param pointer to renderer
+ * \param window pointer to window
+ * \param renderer pointer to renderer
  * \return renderer
  */
 void unloadSDL(SDL_Window *window, SDL_Renderer *renderer);
