@@ -1,2 +1,9 @@
+# VS Code
 .vscode
+
+# CMake
 build
+
+# Doxygen
+doc/html
+doc/latex
