@@ -29,8 +29,8 @@ namespace Models {
             int vy = 0; /*!< Samus' velocity */
             int xSight = 1; /*!< where Samus is looking */
             int ySight = 0; /*!< where Samus is looking */
-            bool isJumping = false;
-            bool isFalling = false;
+            bool isJumping = false; /*!< verify what state Samus is currently on */
+            bool isFalling = false; /*!< verify what state Samus is currently on */
             std::string state; /*!< Samus' state */
 
     };
@@ -40,7 +40,7 @@ namespace Models {
         public:
             explicit Metroid(int x, int y);
             int hp = MetroidConstants::initialHP; /*!< Metroid's hp */
-            int xi;
+            int xi; 
             int yi;
             int ax = 0; /*!< Metroid's initial acceleration */
             int ay = 0; /*!< Metroid's initial acceleration */

@@ -14,25 +14,35 @@ namespace Controllers {
         private:
             Models::Room &room; /*!< Model (previously allocated) */
             Views::Map &mapView; /*!< View (previously allocated) */
-            int damageCooldown = 0;
+            int damageCooldown = 0; /*!< Controls damage*/
 
         public:
-            /*! \brief Samus controller's constructor
+            /*! \brief Map controller's constructor
             *
-            *   Receives three models previously allocated
+            *   Receives a model and a view previously allocated
             *
             * \param a Model (containing Room's infos)
+            * \param a View (contining Map's infos)
             * \return nothing
             */
             Map(Models::Room &room, Views::Map &mapView);
+
+            /*! \Calculates Metroid's Life
+            *
+            * This function also prints the Metroid's life
+            * so the player can know this information
+            * 
+            * \param a Model (containing Metroid's infos)
+            * \return nothing
+            */
             void damageMetroid(Models::Metroid &metroid);
 
-            /*! \brief Draw new frame
+            /*! \brief Changes Rooms
             *
-            *   Calls a function from View to draw the
-            *   images on the screen after the update 
-            *   of the objects positions
+            *   If Samus goes to another room, calls
+            *   the functions to generate a new room
             *
+            * \param a Model (contaning Room's infos)
             * \return nothing
             */       
             void changeRooms(Models::Room &room);
@@ -63,6 +73,14 @@ namespace Controllers {
              * \param a Model (containing Samus' infos)
              */
             Samus(Models::Samus &samus, Views::Samus &samusView);
+
+            /*! \Calculates Samus's Life
+            *
+            * This function also prints tSamus' life
+            * so the player can know this information
+            *
+            * \return nothing
+            */
             void damage();
 
             /*! \brief Controlls Samus' jump
@@ -124,7 +142,7 @@ namespace Controllers {
         private:
             std::vector<Models::Shot> &shots; /*!< Model (previously allocated) */
             Views::Shots &shotsView; /*!< View (previously allocated) */
-            int shotCooldown = 0;
+            int shotCooldown = 0; /*!< Controls shots */
 
         public: 
             /*! \brief Shot controller's constructor
@@ -132,7 +150,7 @@ namespace Controllers {
             *   Receives two models previously allocated
             *
             * \param a Model (containing Samus' infos)
-            * \param a Model
+            * \param a Model (containing Shot's infos)
             * \return nothing
             */
             Shots(std::vector<Models::Shot> &shots, Views::Shots &shotsView);

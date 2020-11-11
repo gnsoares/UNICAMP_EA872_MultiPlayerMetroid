@@ -128,6 +128,9 @@ void Map::update(std::vector<Models::Shot> shots) {
             for (int j = 0; j < shots.size(); j++) {
                 if (checkCollision(shots[j].rect, room.metroids[i].rect)) {
                     damageMetroid(room.metroids[i]);
+                    if (room.metroids[i].hp == 0){
+                        room.metroids.erase(room.metroids.begin()+i);
+                    }
                     break;
                 }
             }

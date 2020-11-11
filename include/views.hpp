@@ -14,13 +14,18 @@ namespace Views {
             SDL_Window *window = nullptr;
 
         public:
+            /*! \brief Map view's constructor
+            *
+            * \param a pointer to a window
+            * \param a pointer to a renderer
+            * \return nothing
+            */
             Map(SDL_Window *window, SDL_Renderer *renderer);
 
-            /*! \brief Draws frame
+            /*! \brief Render objects on the screen
             *  
-            *   Receives three models previously allocated, and renderizes
-            *   the textures attributed to each end every element shown in
-            *   the screen, based on their locations
+            *   Takes objects' positions and renders their respective
+            *   textures at that position
             *  
             * \param a Model (containing Room's infos)
             * \return nothing
@@ -33,7 +38,10 @@ namespace Views {
             */
             void destroyTextures(Models::Room &room);
 
-            /*! \brief Desallocates textures allocated during the program's execution
+            /*! \brief Initializes Room
+            * 
+            *   Gets objects' initial positions and loads their respective textures
+            * 
             * \param a Model (containing Room's infos)
             * \return nothing
             */
