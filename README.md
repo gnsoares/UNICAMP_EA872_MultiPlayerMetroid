@@ -8,4 +8,4 @@ To play, just run `./metroid`. Use space to jump and and left and right arrows t
 
 # Code Structure
 
-To see the code structure just run doxygen `Doxyfile`, then go to `/doc/html` and there, run `(your navigator name, eg. firefox) index.html`. Not that you need to have `doxygen` installed in yout system.
+To see the code structure just run `doxygen Doxyfile`, then go to `/doc/html` and there, run `(your navigator name, eg. firefox) index.html`. Not that you need to have `doxygen` installed in yout system.
