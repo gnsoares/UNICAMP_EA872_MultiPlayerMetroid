@@ -1,4 +1,4 @@
-# Builing
+# Building
 
 To build just run `mkdir build && cd build`, then `cmake ../` and, finally, `make`. Note that you need to have `SDL` and `g++` installed in your system.
 
