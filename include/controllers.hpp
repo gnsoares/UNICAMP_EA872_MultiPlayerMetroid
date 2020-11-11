@@ -18,43 +18,41 @@ namespace Controllers {
 
         public:
             /*! \brief Map controller's constructor
-            *
-            *   Receives a model and a view previously allocated
-            *
-            * \param a Model (containing Room's infos)
-            * \param a View (contining Map's infos)
-            * \return nothing
-            */
+             *
+             * Receives a model and a view previously allocated
+             *
+             * \param room room model
+             * \param mapView map view
+             */
             Map(Models::Room &room, Views::Map &mapView);
 
-            /*! \Calculates Metroid's Life
-            *
-            * This function also prints the Metroid's life
-            * so the player can know this information
-            * 
-            * \param a Model (containing Metroid's infos)
-            * \return nothing
-            */
+            /*! \brief Make a metroid take damage
+             *
+             * This function also outputs the Metroid's hp to stdout
+             * 
+             * \param metroid metroid model
+             * \return nothing
+             */
             void damageMetroid(Models::Metroid &metroid);
 
             /*! \brief Changes Rooms
             *
-            *   If Samus goes to another room, calls
-            *   the functions to generate a new room
+            * If Samus goes to another room, calls
+            * the functions to generate a new room
             *
-            * \param a Model (contaning Room's infos)
+            * \param room room model
             * \return nothing
             */       
             void changeRooms(Models::Room &room);
 
-            /*! \brief Draw new frame
-            *
-            *   Calls a function from View to draw the
-            *   images on the screen after the update 
-            *   of the objects positions
-            *
-            * \return nothing
-            */
+            /*! \brief Updates the state of the map
+             *
+             * Updates the positions and states of all the elements
+             * that compose the map
+             *
+             * \param shots shots vector
+             * \return nothing
+             */
             void update(std::vector<Models::Shot> shots);
     };
 
@@ -68,73 +66,58 @@ namespace Controllers {
 
             /*! \brief Samus controller's constructor
              *
-             * Receives two models previously allocated
+             * Receives a model and a view previously allocated
              *
-             * \param a Model (containing Samus' infos)
+             * \param samus samus model
+             * \param samusView samus view
              */
             Samus(Models::Samus &samus, Views::Samus &samusView);
 
-            /*! \Calculates Samus's Life
-            *
-            * This function also prints tSamus' life
-            * so the player can know this information
-            *
-            * \return nothing
-            */
+            /*! \brief Make Samus take damage
+             *
+             * This function also outputs the Samus' hp to stdout
+             *
+             * \return nothing
+             */
             void damage();
 
-            /*! \brief Controlls Samus' jump
-             *
-             * Verifies if Samus is jumping and if she
-             * is, sets her state to jumping and call the 
-             * functions to update her velocity and position 
-             * during the jump
+            /*! \brief Make Samus jump
              * 
              * \return nothing
              */
             void jump();
 
-            /*! \brief Controlls Samus when shes looking up
-             *
-             * Verifies if Samus is looking up and, if she
-             * is, sets her state as so and call the functions
-             * to make her aim upwards.
+            /*! \brief Make Samus look up
              * 
              * \return nothing
              */
             void lookUp();
 
-            /*! \brief Controlls Samus' morphing
-            *
-            *   Verifies if Samus has morphing ball and if she
-            *   does, sets her state to morphed
-            * 
-            * \return nothing
-            */
+            /*! \brief Make Samus morph
+             *
+             * \return nothing
+             */
             void morph();
 
-            /*! \brief Controlls Samus walking to the left
-            *
-            *   Updates Samus' position to the left
-            *
-            * \return nothing
-            */
+            /*! \brief Make Samus move left
+             *
+             * \return nothing
+             */
             void moveLeft();
 
-            /*! \brief Controlls Samus walking to the right
-            *
-            *   Updates Samus' position to the right
-            *
-            * \return nothing
-            */
+            /*! \brief Make Samus move right
+             *
+             * \return nothing
+             */
             void moveRight();
 
-            /*! \brief Integration between keyboard commands and Samus controller
-            *
-            *   Gets updtaded keyboard state and calls functions accordingly
-            *
-            * \return nothing
-            */
+            /*! \brief Update Samus' state
+             *
+             * \param blocks blocks vector
+             * \param doors doors vector
+             * \param metroids metroids vector
+             * \return nothing
+             */
             void update(std::vector<Models::Block> blocks, std::vector<Models::Door> doors, std::vector<Models::Metroid> metroids);
     };
 
@@ -146,31 +129,32 @@ namespace Controllers {
 
         public: 
             /*! \brief Shot controller's constructor
-            *
-            *   Receives two models previously allocated
-            *
-            * \param a Model (containing Samus' infos)
-            * \param a Model (containing Shot's infos)
-            * \return nothing
-            */
+             *
+             * Receives a vector of models and a view previously allocated
+             *
+             * \param shots shots vector
+             * \param shotsView shots view
+             */
             Shots(std::vector<Models::Shot> &shots, Views::Shots &shotsView);
 
-            /*! \brief Allocates Shot Object
-            *
-            *   Aloccates Shot Object on a vector previously
-            *   define, basing it's initial positions on Samus's
-            *   position at the moment the Shot is created
-            *
-            * \return nothing
-            */
+            /*! \brief Creates a shot
+             *
+             * \param x shot x position
+             * \param y shot y position
+             * \param vx shot x velocity
+             * \param vy shot y velocity
+             * \return nothing
+             */
             void createShot(int x, int y, int vx, int vy);
 
-            /*! \brief Integration between keyboard commands and shots controller
-            *
-            *   Gets updtaded keyboard state and calls functions accordingly
-            *
-            * \return nothing
-            */
+            /*! \brief Update shots' state
+             *
+             * \param x shot x position
+             * \param y shot y position
+             * \param vx shot x velocity
+             * \param vy shot y velocity
+             * \return nothing
+             */
             void update(int x, int y, int vx, int vy);
     };
 }
