@@ -15,9 +15,10 @@ namespace EntityCodes {
 }
 
 namespace MetroidMovement {
+    const int mass = 10000;
     const int horizontalStep = 10;
-    const int elasticConstant = 5;
-    const int dampingConstant = 5;
+    const int elasticConstant = 100;
+    const int dampingConstant = 20;
 }
 
 namespace Screen {
@@ -25,10 +26,11 @@ namespace Screen {
     const int height = 480;
 }
 
-namespace SamusMovement {
+namespace SamusConstants {
+
     const int horizontalStep = 10;
-    const int initialVerticalVelocity = 10;
-    const std::string aimingUpState = "aimingUp";
+    const int jumpVy = 10;
+
     const std::string idleState = "idle";
     const std::string jumpingState = "jumping";
     const std::string morphedState = "morphed";
@@ -36,7 +38,7 @@ namespace SamusMovement {
 }
 
 namespace Physics {
-    const int gravity = 1;
+    const int gravity = 2;
     const int time = 1;
 }
 
@@ -50,7 +52,7 @@ namespace Commands {
     const std::string lookUp = "LKU";
     const std::string morph = "MPH";
     const std::string jump = "JMP";
+    const std::string shot = "SHT";
 }
-
 
 #endif
