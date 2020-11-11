@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <cstdio>
+#include <iostream>
 #include <map>
 #include <fstream>
 #include <vector>
@@ -80,4 +81,52 @@ Models::Room loadRoom(std::string name) {
     }
 
     return room;
+}
+
+SDL_Window *loadWindow() {
+    SDL_Window *window;
+
+    // create window
+    window = SDL_CreateWindow(
+        "Metroid Clone",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        Screen::width,
+        Screen::height,
+        SDL_WINDOW_SHOWN
+    );
+
+    // window creation failed: print error
+    if (window == nullptr) {
+        std::cout << SDL_GetError();
+        SDL_Quit();
+    }
+
+    return window;
+}
+
+SDL_Renderer *loadRenderer(SDL_Window *window) {
+    SDL_Renderer *renderer;
+
+    // create renderer
+    renderer = SDL_CreateRenderer(
+        window,
+        -1,
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+    );
+
+    // renderer creation failed: print error
+    if (renderer == nullptr) {
+        SDL_DestroyWindow(window);
+        std::cout << SDL_GetError();
+        SDL_Quit();
+    }
+
+    return renderer;
+}
+
+void unloadSDL(SDL_Window *window, SDL_Renderer *renderer) {
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }

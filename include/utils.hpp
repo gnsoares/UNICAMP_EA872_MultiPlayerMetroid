@@ -16,19 +16,18 @@
  */
 bool checkCollision(SDL_Rect rect1, SDL_Rect rect2);
 
-/*! \brief Textures decoder
- *
- * \param name textures encoder file name
- * \return map from entity code to texture file name
- */
-std::map<std::string, std::string> decodeTextures(std::string name);
-
 /*! \brief Room loader
  *
  * \param name room file name
  * \param textureMap map from entity code to texture file name
  * \return room object
  */
-Models::Room loadRoom(std::string name, std::map<std::string, std::string> textureMap);
+Models::Room loadRoom(std::string name);
+
+SDL_Window *loadWindow();
+
+SDL_Renderer *loadRenderer(SDL_Window *window);
+
+void unloadSDL(SDL_Window *window, SDL_Renderer *renderer);
 
 #endif
