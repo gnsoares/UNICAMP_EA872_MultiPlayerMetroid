@@ -15,36 +15,35 @@ namespace Views {
 
         public:
             /*! \brief Map view's constructor
-            *
-            * \param a pointer to a window
-            * \param a pointer to a renderer
-            * \return nothing
-            */
+             *
+             * \param window pointer to a window
+             * \param renderer pointer to a renderer
+             */
             Map(SDL_Window *window, SDL_Renderer *renderer);
 
             /*! \brief Render objects on the screen
-            *  
-            *   Takes objects' positions and renders their respective
-            *   textures at that position
-            *  
-            * \param a Model (containing Room's infos)
-            * \return nothing
-            */
+             *
+             * Renders all objetcs in a room
+             *
+             * \param room room model
+             * \return nothing
+             */
             void render(Models::Room &room);
 
             /*! \brief Desallocates textures allocated during the program's execution
-            * \param a Model (containing Room's infos)
-            * \return nothing
-            */
+             *
+             * \param room room model
+             * \return nothing
+             */
             void destroyTextures(Models::Room &room);
 
             /*! \brief Initializes Room
-            * 
-            *   Gets objects' initial positions and loads their respective textures
-            * 
-            * \param a Model (containing Room's infos)
-            * \return nothing
-            */
+             *
+             * Loads the textures of all elements in a room
+             *
+             * \param room room model
+             * \return nothing
+             */
             void initializeRoom(Models::Room &room);
     };
 
@@ -55,16 +54,31 @@ namespace Views {
             const Uint8 *state = SDL_GetKeyboardState(NULL);
 
         public:
+            /*! \brief Samus view's constructor
+             *
+             * \param window pointer to a window
+             * \param renderer pointer to a renderer
+             */
             Samus(SDL_Window *window, SDL_Renderer *renderer);
+
+            /*! \brief Samus texture loader
+             *
+             * \param samus Samus model
+             * \return nothing
+             */
             void loadTexture(Models::Samus &samus);
+
+            /*! \brief Renders Samus
+             *
+             * \param samus Samus model
+             * \return nothing
+             */
             void render(Models::Samus &samus);
 
-            /*! \brief Return Command
-            * \param Return a string that will later indicate
-            * what command should be excuted based on the state
-            * of the keyboard
-            * \return string
-            */
+            /*! \brief Process user command
+             *
+             * \return command string
+             */
             std::string processCommand();
     };
 
@@ -75,16 +89,31 @@ namespace Views {
             const Uint8 *state = SDL_GetKeyboardState(NULL);
 
         public:
+            /*! \brief Shots view's constructor
+             *
+             * \param window pointer to a window
+             * \param renderer pointer to a renderer
+             */
             Shots(SDL_Window *window, SDL_Renderer *renderer);
+
+            /*! \brief Shot texture loader
+             *
+             * \param shot shot model
+             * \return nothing
+             */
             void loadTexture(Models::Shot &shot);
+
+            /*! \brief Renders shot
+             *
+             * \param samus shot model
+             * \return nothing
+             */
             void render(std::vector<Models::Shot> &shots);
 
-            /*! \brief Return Command
-            * \param Return a string that will later indicate
-            * what command should be excuted based on the state
-            * of the keyboard
-            * \return string
-            */
+            /*! \brief Process user command
+             *
+             * \return command string
+             */
             std::string processCommand();
     };
 
