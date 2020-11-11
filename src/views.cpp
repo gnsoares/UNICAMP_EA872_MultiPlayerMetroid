@@ -18,21 +18,21 @@ void Map::initializeRoom(Models::Room &room) {
 
     std::string code;
 
-    code = Entities::block.codeChar;
+    code = EntitiesConstants::block.codeChar;
     for (int i = 0; i < room.blocks.size(); i++) {
-        room.blocks[i].texture = IMG_LoadTexture(renderer, ("../assets/" + Entities::block.textureFileName).c_str());
+        room.blocks[i].texture = IMG_LoadTexture(renderer, ("../assets/" + EntitiesConstants::block.textureFileName).c_str());
         SDL_QueryTexture(room.blocks[i].texture, nullptr, nullptr, &room.blocks[i].rect.w, &room.blocks[i].rect.h);
     }
 
-    code = Entities::door.codeChar;
+    code = EntitiesConstants::door.codeChar;
     for (int i = 0; i < room.doors.size(); i++) {
-        room.doors[i].texture = IMG_LoadTexture(renderer, ("../assets/" + Entities::door.textureFileName).c_str());
+        room.doors[i].texture = IMG_LoadTexture(renderer, ("../assets/" + EntitiesConstants::door.textureFileName).c_str());
         SDL_QueryTexture(room.doors[i].texture, nullptr, nullptr, &room.doors[i].rect.w, &room.doors[i].rect.h);
     }
 
-    code = Entities::metroid.codeChar;
+    code = EntitiesConstants::metroid.codeChar;
     for (int i = 0; i < room.metroids.size(); i++) {
-        room.metroids[i].texture = IMG_LoadTexture(renderer, ("../assets/" + Entities::metroid.textureFileName).c_str());
+        room.metroids[i].texture = IMG_LoadTexture(renderer, ("../assets/" + EntitiesConstants::metroid.textureFileName).c_str());
         SDL_QueryTexture(room.metroids[i].texture, nullptr, nullptr, &room.metroids[i].rect.w, &room.metroids[i].rect.h);
     }
 }
@@ -66,7 +66,7 @@ Samus::Samus(SDL_Window *window, SDL_Renderer *renderer) {
 }
 
 void Samus::loadTexture(Models::Samus &samus) {
-    samus.texture = IMG_LoadTexture(renderer, ("../assets/" + Entities::samus.textureFileName).c_str());
+    samus.texture = IMG_LoadTexture(renderer, ("../assets/" + EntitiesConstants::samus.textureFileName).c_str());
     SDL_QueryTexture(samus.texture, nullptr, nullptr, &samus.rect.w, &samus.rect.h);
 }
 
@@ -96,7 +96,7 @@ Shots::Shots(SDL_Window *window, SDL_Renderer *renderer) {
 }
 
 void Shots::loadTexture(Models::Shot &shot) {
-    shot.texture = IMG_LoadTexture(renderer, ("../assets/" + Entities::shot.textureFileName).c_str());
+    shot.texture = IMG_LoadTexture(renderer, ("../assets/" + EntitiesConstants::shot.textureFileName).c_str());
     SDL_QueryTexture(shot.texture, nullptr, nullptr, &shot.rect.w, &shot.rect.h);
 }
 

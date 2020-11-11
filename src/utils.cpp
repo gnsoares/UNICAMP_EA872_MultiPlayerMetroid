@@ -53,26 +53,26 @@ Models::Room loadRoom(std::string name) {
         }
 
         // entity is a block: create block and add it to room
-        if (c == Entities::block.codeChar) {
+        if (c == EntitiesConstants::block.codeChar) {
             Models::Block block(x, y);
             room.blocks.push_back(block);
 
         // entity is door: create door and add it to room
-        } else if (c == Entities::door.codeChar) {
+        } else if (c == EntitiesConstants::door.codeChar) {
             Models::Door door(x, y);
             room.doors.push_back(door);
 
         // entity is metroid: create metroid and add it to room
-        } else if (c == Entities::metroid.codeChar) {
+        } else if (c == EntitiesConstants::metroid.codeChar) {
             Models::Metroid metroid(x, y);
             room.metroids.push_back(metroid);
 
         // entity is morphing ball: create morphing ball and add it to room
-        } else if (c == Entities::morphingball.codeChar) {
+        } else if (c == EntitiesConstants::morphingball.codeChar) {
             room.morphingball = new Models::MorphingBall(x, y);
 
         // entity is motherbrain: create motherbrain and add it to room
-        } else if (c == Entities::motherbrain.codeChar) {
+        } else if (c == EntitiesConstants::motherbrain.codeChar) {
             room.motherbrain = new Models::MotherBrain(x, y);
         }
 
