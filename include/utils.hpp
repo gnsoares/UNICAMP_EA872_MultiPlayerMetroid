@@ -16,6 +16,16 @@
  */
 bool checkCollision(SDL_Rect rect1, SDL_Rect rect2);
 
+/*! \brief Collision checker between an object and a wall
+ *
+ * \param object object rectangle
+ * \param wall wall rectangle
+ * \param prevX object's previous x position
+ * \param prevY object's previous y position
+ * \return Which of the foor walls the object collided with
+ */
+std::string collideWithWall(SDL_Rect object, SDL_Rect wall, int prevX, int prevY);
+
 /*! \brief Room loader
  *
  * \param name room file name

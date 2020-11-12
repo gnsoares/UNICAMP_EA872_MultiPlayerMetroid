@@ -1,8 +1,8 @@
 #include <SDL2/SDL.h>
 #include <cstdio>
 #include <iostream>
-#include <map>
 #include <fstream>
+#include <string>
 #include <vector>
 #include "constants.hpp"
 #include "models.hpp"
@@ -22,6 +22,25 @@ bool checkCollision(SDL_Rect rect1, SDL_Rect rect2) {
 
     // rectangles overlap in x and y: they are colliding
     return xOverlap && yOverlap;
+}
+
+std::string collideWithWall(SDL_Rect object, SDL_Rect wall, int prevX, int prevY) {
+
+    // collided with floor
+    if (object.y + object.h >= wall.y && prevY + object.h <= wall.y)
+        return "floor";
+
+    // collided with ceiling
+    if (wall.y + wall.h >= object.y && wall.y + wall.h <= prevY)
+        return "ceiling";
+
+    // collided with right wall
+    if (object.x + object.w >= wall.x && prevX + object.w <= wall.x)
+        return "right";
+
+    // collided with left wall
+    if (wall.x + wall.w >= object.x && wall.x + wall.w <= prevX)
+        return "left";
 }
 
 Models::Room loadRoom(std::string name) {
