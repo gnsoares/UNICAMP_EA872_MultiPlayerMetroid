@@ -1,3 +1,4 @@
+#include <chrono>
 #include "constants.hpp"
 #include "controllers.hpp"
 #include "models.hpp"
@@ -5,6 +6,9 @@
 
 
 int main() {
+
+    // time control variable
+    std::chrono::duration<double> elapsed;
 
     // SDL visualization variables
     SDL_Window *window = loadWindow();
@@ -30,6 +34,9 @@ int main() {
     // Game must run until user quits
     while (true) {
 
+        // fetch start of game iteration
+        auto start = std::chrono::system_clock::now();
+
         // Poll events
         if (SDL_PollEvent(&event)) {
 
@@ -47,16 +54,22 @@ int main() {
         shotsController.update(
             samus.rect.x + samus.rect.w/2,
             samus.rect.y + samus.rect.h/2,
-            2 * samus.xSight * SamusConstants::horizontalStep,
-            2 * samus.ySight * SamusConstants::horizontalStep
+            1.5 * samus.xSight * SamusConstants::horizontalStep,
+            1.5 * samus.ySight * SamusConstants::horizontalStep
         );
         map.update(shots);
 
         // render scene
         SDL_RenderPresent(renderer);
 
+        // fetch end of game iteration
+        auto end = std::chrono::system_clock::now();
+
+        // measure time duration of game iteration
+        elapsed = end - start;
+
         // control FPS
-        SDL_Delay(50);
+        SDL_Delay(35 - elapsed.count());
 
     }
 
