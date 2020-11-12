@@ -248,8 +248,8 @@ Models::Room loadRoom(std::string name) {
     getline(roomFileStream, width, 'x');
     getline(roomFileStream, height);
 
-    // while end of file is not reached: read room
-    while (feof(roomFile) == 0) {
+    // while end of room not reached: read room
+    while (y < std::stoi(height)) {
 
         // each char is a room entity
         c = getc(roomFile);
@@ -291,6 +291,19 @@ Models::Room loadRoom(std::string name) {
 
         // increase current position
         x += 20;
+    }
+
+    // read doors
+    for (int i = 0; i < room.doors.size(); i++) {
+
+        // buffer has a linebreak: read next
+        if (c == '\n' && feof(roomFile) == 0) c = getc(roomFile);
+
+        // keep reading room names until linebreak is reached
+        while (c != '\n' && feof(roomFile) == 0) {
+            room.doors[i].leadsTo.push_back(c);
+            c = getc(roomFile);
+        }
     }
 
     return room;

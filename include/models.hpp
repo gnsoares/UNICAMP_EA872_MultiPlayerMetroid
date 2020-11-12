@@ -102,7 +102,7 @@ namespace Models {
         using Entity::Entity;
         public:
             bool isOpen = false; /*!< Whether or not the door is open */
-            std::string leadsTo; /*!< Where the door leads to */
+            std::string leadsTo = ""; /*!< Where the door leads to */
     };
 
     class Room {

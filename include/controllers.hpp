@@ -51,9 +51,10 @@ namespace Controllers {
              * that compose the map
              *
              * \param shots shots vector
+             * \param samus samus model
              * \return nothing
              */
-            void update(std::vector<Models::Shot> shots);
+            void update(std::vector<Models::Shot> shots, Models::Samus &samus);
     };
 
     class Samus {
