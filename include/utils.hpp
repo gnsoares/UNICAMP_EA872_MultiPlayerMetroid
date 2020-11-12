@@ -26,6 +26,12 @@ bool checkCollision(SDL_Rect rect1, SDL_Rect rect2);
  */
 std::string collideWithWall(SDL_Rect object, SDL_Rect wall, int prevX, int prevY);
 
+void processMetroidCollisionWithWall(Models::Metroid &metroid, std::vector<Models::Block> blocks, int prevX, int prevY);
+void processMetroidCollisionWithWall(Models::Metroid &metroid, std::vector<Models::Door> doors, int prevX, int prevY);
+
+void processSamusCollisionWithWall(Models::Samus &samus, std::vector<Models::Block> blocks, int prevX, int prevY);
+void processSamusCollisionWithWall(Models::Samus &samus, std::vector<Models::Door> doors, int prevX, int prevY);
+
 /*! \brief Room loader
  *
  * \param name room file name

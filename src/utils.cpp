@@ -1,9 +1,9 @@
-#include <SDL2/SDL.h>
 #include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <SDL2/SDL.h>
 #include "constants.hpp"
 #include "models.hpp"
 
@@ -41,6 +41,199 @@ std::string collideWithWall(SDL_Rect object, SDL_Rect wall, int prevX, int prevY
     // collided with left wall
     if (wall.x + wall.w >= object.x && wall.x + wall.w <= prevX)
         return "left";
+
+    // failed for all walls: return nothing
+    return "";
+}
+
+void processMetroidCollisionWithWall(Models::Metroid &metroid, std::vector<Models::Block> blocks, int prevX, int prevY) {
+    std::string collision = "";
+
+    for (int i = 0; i < blocks.size(); i++) {
+        if (checkCollision(blocks[i].rect, metroid.rect)) {
+
+            // check which side collided
+            collision = collideWithWall(metroid.rect, blocks[i].rect, prevX, prevY);
+
+            // collided with floor
+            if (collision == "floor") {
+
+                // set feet at the top of the block
+                metroid.rect.y = blocks[i].rect.y - metroid.rect.h;
+
+                // set acceleration away from floor and set new resting position
+                metroid.ay -= 5; metroid.yi -= 5;
+            }
+
+            // collided with ceiling
+            else if (collision == "ceiling") {
+
+                // set head at the bottomm of the block
+                metroid.rect.y = blocks[i].rect.y + blocks[i].rect.h;
+
+                // set acceleration away from ceiling and set new resting position
+                metroid.ay += 5; metroid.yi += 5;
+            }
+
+            // collided with right wall
+            else if (collision == "right") {
+
+                // set right side at the left side of the block
+                metroid.rect.x = blocks[i].rect.x - metroid.rect.w;
+
+                // set acceleration away from wall and set new resting position
+                metroid.ax -= 5; metroid.xi -= 5;
+            }
+
+            // collided with left wall
+            else if (collision == "left") {
+
+                // set left side at the right side of the block
+                metroid.rect.x = blocks[i].rect.x + blocks[i].rect.w;
+
+                // set acceleration away from wall and set new resting position
+                metroid.ax += 5; metroid.xi += 5;
+            }
+        }
+    }
+}
+void processMetroidCollisionWithWall(Models::Metroid &metroid, std::vector<Models::Door> doors, int prevX, int prevY) {
+    std::string collision = "";
+
+    for (int i = 0; i < doors.size(); i++) {
+
+        // door open: ignore
+        if (doors[i].isOpen)
+            continue;
+
+        if (checkCollision(doors[i].rect, metroid.rect)) {
+
+            // check which side collided
+            collision = collideWithWall(metroid.rect, doors[i].rect, prevX, prevY);
+
+            // collided with floor
+            if (collision == "floor") {
+
+                // set feet at the top of the block
+                metroid.rect.y = doors[i].rect.y - metroid.rect.h;
+
+                // set acceleration away from floor and set new resting position
+                metroid.ay -= 5; metroid.yi -= 5;
+            }
+
+            // collided with ceiling
+            else if (collision == "ceiling") {
+
+                // set head at the bottomm of the block
+                metroid.rect.y = doors[i].rect.y + doors[i].rect.h;
+
+                // set acceleration away from ceiling and set new resting position
+                metroid.ay += 5; metroid.yi += 5;
+            }
+
+            // collided with right wall
+            else if (collision == "right") {
+
+                // set right side at the left side of the block
+                metroid.rect.x = doors[i].rect.x - metroid.rect.w;
+
+                // set acceleration away from wall and set new resting position
+                metroid.ax -= 5; metroid.xi -= 5;
+            }
+
+            // collided with left wall
+            else if (collision == "left") {
+
+                // set left side at the right side of the block
+                metroid.rect.x = doors[i].rect.x + doors[i].rect.w;
+
+                // set acceleration away from wall and set new resting position
+                metroid.ax += 5; metroid.xi += 5;
+            }
+        }
+    }
+}
+
+void processSamusCollisionWithWall(Models::Samus &samus, std::vector<Models::Block> blocks, int prevX, int prevY) {
+    std::string collision = "";
+
+    for (int i = 0; i < blocks.size(); i++) {
+        if (checkCollision(blocks[i].rect, samus.rect)) {
+
+            // check which side collided
+            collision = collideWithWall(samus.rect, blocks[i].rect, prevX, prevY);
+
+            // collided with floor: set feet at the top of the block update Samus' state
+            if (collision == "floor") {
+                samus.rect.y = blocks[i].rect.y - samus.rect.h;
+                samus.isJumping = samus.isFalling = false;
+            }
+
+            // collided with ceiling: set head at the bottomm of the block update Samus' state
+            else if (collision == "ceiling") {
+                samus.rect.y = blocks[i].rect.y + blocks[i].rect.h;
+                samus.isFalling = true;
+            }
+
+            // collided with right wall: set right side at the left side of the block update Samus' state
+            else if (collision == "right") {
+                samus.rect.x = blocks[i].rect.x - samus.rect.w;
+                samus.isFalling = true;
+            }
+
+            // collided with left wall: set left side at the right side of the block update Samus' state
+            else if (collision == "left") {
+                samus.rect.x = blocks[i].rect.x + blocks[i].rect.w;
+                samus.isFalling = true;
+            }
+
+            // samus must enter free fall if she collides
+            if (!samus.isFalling) samus.vy = 0;
+        }
+    }
+}
+void processSamusCollisionWithWall(Models::Samus &samus, std::vector<Models::Door> doors, int prevX, int prevY) {
+    std::string collision = "";
+
+    for (int i = 0; i < doors.size(); i++) {
+
+        // door open: ignore
+        if (doors[i].isOpen)
+            continue;
+
+        if (checkCollision(doors[i].rect, samus.rect)) {
+
+            // check which side collided
+            collision = collideWithWall(samus.rect, doors[i].rect, prevX, prevY);
+
+            // collided with floor: set feet at the top of the block update Samus' state
+            if (collision == "floor") {
+                samus.rect.y = doors[i].rect.y - samus.rect.h;
+                samus.isJumping = samus.isFalling = false;
+            }
+
+            // collided with ceiling: set head at the bottomm of the block update Samus' state
+            else if (collision == "ceiling") {
+                samus.rect.y = doors[i].rect.y + doors[i].rect.h;
+                samus.isFalling = true;
+            }
+
+            // collided with right wall: set right side at the left side of the block update Samus' state
+            else if (collision == "right") {
+                samus.rect.x = doors[i].rect.x - samus.rect.w;
+                samus.isFalling = true;
+            }
+
+            // collided with left wall: set left side at the right side of the block update Samus' state
+            else if (collision == "left") {
+                samus.rect.x = doors[i].rect.x + doors[i].rect.w;
+                samus.isFalling = true;
+            }
+
+            // samus must enter free fall if she collides
+            if (!samus.isFalling) samus.vy = 0;
+        }
+    }
 }
 
 Models::Room loadRoom(std::string name) {
