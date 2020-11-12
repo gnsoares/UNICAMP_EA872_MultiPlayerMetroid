@@ -107,6 +107,7 @@ namespace Models {
 
     class Room {
         public:
+            std::string name = ""; /*!< Room name */
             std::vector<Block> blocks; /*!< Vector of Block objects */
             std::vector<Door> doors; /*!< Vector of Door objects */
             std::vector<Metroid> metroids; /*!< Vector of Metroid objects */

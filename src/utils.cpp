@@ -239,6 +239,7 @@ void processSamusCollisionWithWall(Models::Samus &samus, std::vector<Models::Doo
 Models::Room loadRoom(std::string name) {
     int c, x = 0, y = 0;
     Models::Room room;
+    room.name = name;
     std::string path = "../doc/rooms/" + name + ".room", width, height, code;
     FILE *roomFile = fopen(path.c_str(), "r");
     std::ifstream roomFileStream(path, std::ios::in);
