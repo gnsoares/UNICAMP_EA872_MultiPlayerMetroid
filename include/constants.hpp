@@ -45,7 +45,7 @@ namespace MetroidConstants {
 
 namespace Screen {
     const int width = 640;  /*!< Screen width*/
-    const int height = 240;  /*!< Screen height*/
+    const int height = 360;  /*!< Screen height*/
 }
 
 namespace SamusConstants {

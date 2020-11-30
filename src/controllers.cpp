@@ -37,9 +37,10 @@ void Map::damageMetroid(Models::Metroid &metroid) {
     std::cout << "Metroid damage " << metroid.hp << "\n";
 }
 
-void Map::update(std::vector<Models::Shot> shots) {
+void Map::update(std::vector<Models::Shot> shots, Models::Samus &samus) {
     int prevX, prevY;
 
+    // update metroids
     for (int i = 0; i < room.metroids.size(); i++) {
         prevX = room.metroids[i].rect.x; prevY = room.metroids[i].rect.y;
 
@@ -80,6 +81,45 @@ void Map::update(std::vector<Models::Shot> shots) {
 
     // decrease cooldown
     if (damageCooldown > 0) damageCooldown--;
+
+    // update doors
+    for (int i = 0; i < room.doors.size(); i++) {
+
+        // door is open and collided with Samus: change rooms
+        if (room.doors[i].isOpen &&
+            checkCollision(samus.rect, room.doors[i].rect)) {
+            std::string oldRoom = room.name;
+            Models::Room newRoom = loadRoom(room.doors[i].leadsTo);
+
+            // go to new room
+            changeRooms(newRoom);
+
+            // update Samus' position in new room
+            for (int j = 0; j < room.doors.size(); j++) {
+                if (room.doors[j].leadsTo == oldRoom) {
+                    samus.rect.x = room.doors[j].rect.x + room.doors[j].rect.w / 2;
+                    samus.rect.y = room.doors[j].rect.y + room.doors[j].rect.h - samus.rect.h - 10;
+                    break;
+                }
+            }
+            // no need to check other doors
+            break;
+        }
+
+        // door is closed: check collision with shots
+        if (!room.doors[i].isOpen) {
+            for (int j = 0; j < shots.size(); j++) {
+
+                // collided with shot: open door
+                if (checkCollision(shots[j].rect, room.doors[i].rect)) {
+                    room.doors[i].isOpen = true;
+
+                    // no need to check other shots
+                    break;
+                }
+            }
+        }
+    }
 
     // render map
     mapView.render(room);

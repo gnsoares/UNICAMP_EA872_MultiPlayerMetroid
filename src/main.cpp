@@ -57,7 +57,7 @@ int main() {
             1.5 * samus.xSight * SamusConstants::horizontalStep,
             1.5 * samus.ySight * SamusConstants::horizontalStep
         );
-        map.update(shots);
+        map.update(shots, samus);
 
         // render scene
         SDL_RenderPresent(renderer);

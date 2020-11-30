@@ -102,11 +102,12 @@ namespace Models {
         using Entity::Entity;
         public:
             bool isOpen = false; /*!< Whether or not the door is open */
-            std::string leadsTo; /*!< Where the door leads to */
+            std::string leadsTo = ""; /*!< Where the door leads to */
     };
 
     class Room {
         public:
+            std::string name = ""; /*!< Room name */
             std::vector<Block> blocks; /*!< Vector of Block objects */
             std::vector<Door> doors; /*!< Vector of Door objects */
             std::vector<Metroid> metroids; /*!< Vector of Metroid objects */
