@@ -23,7 +23,6 @@ namespace Controllers {
              *
              * \param room room model
              * \param mapView map view
-             * \return nothing
              */
             Map(Models::Room &room, Views::Map &mapView);
 
@@ -52,9 +51,10 @@ namespace Controllers {
              * that compose the map
              *
              * \param shots shots vector
+             * \param samus samus model
              * \return nothing
              */
-            void update(std::vector<Models::Shot> shots);
+            void update(std::vector<Models::Shot> shots, Models::Samus &samus);
     };
 
     class Samus {
@@ -71,7 +71,6 @@ namespace Controllers {
              *
              * \param samus samus model
              * \param samusView samus view
-             * \return nothing
              */
             Samus(Models::Samus &samus, Views::Samus &samusView);
 
@@ -136,18 +135,25 @@ namespace Controllers {
              *
              * \param shots shots vector
              * \param shotsView shots view
-             * \return nothing
              */
             Shots(std::vector<Models::Shot> &shots, Views::Shots &shotsView);
 
             /*! \brief Creates a shot
              *
+             * \param x shot x position
+             * \param y shot y position
+             * \param vx shot x velocity
+             * \param vy shot y velocity
              * \return nothing
              */
             void createShot(int x, int y, int vx, int vy);
 
             /*! \brief Update shots' state
              *
+             * \param x shot x position
+             * \param y shot y position
+             * \param vx shot x velocity
+             * \param vy shot y velocity
              * \return nothing
              */
             void update(int x, int y, int vx, int vy);
