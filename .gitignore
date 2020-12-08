@@ -7,3 +7,6 @@ build
 # Doxygen
 doc/html
 doc/latex
+
+# save files
+assets/save.json

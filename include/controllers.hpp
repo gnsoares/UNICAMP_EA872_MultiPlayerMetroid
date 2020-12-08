@@ -181,10 +181,13 @@ namespace Controllers {
             Models::Room room = loadRoom("test");
             Controllers::Map map = Map(room, mapView);
 
-            // Save & Load
-            json j;
-            json jL;
+            const Uint8* state;
+
         public:
+            Game(){
+                this->state = SDL_GetKeyboardState(nullptr);
+            }
+
             /*! \brief game controller's destructor
              *
              * Unloads SDL attributes
