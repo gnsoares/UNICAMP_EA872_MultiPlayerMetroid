@@ -6,6 +6,7 @@
 #include "models.hpp"
 #include "utils.hpp"
 #include "views.hpp"
+#include "json.hpp"
 
 
 namespace Controllers {
@@ -180,6 +181,9 @@ namespace Controllers {
             Models::Room room = loadRoom("test");
             Controllers::Map map = Map(room, mapView);
 
+            // Save & Load
+            json j;
+            json jL;
         public:
             /*! \brief game controller's destructor
              *
@@ -192,6 +196,12 @@ namespace Controllers {
              * \return nothing
              */
             void update();
+
+            /*! \brief save game state
+             *
+             */
+            void save();
+            void load();
     };
 }
 
