@@ -4,7 +4,9 @@
 #include <SDL2/SDL.h>
 #include "constants.hpp"
 #include "controllers.hpp"
+#include "models.hpp"
 #include "utils.hpp"
+#include "views.hpp"
 using namespace Controllers;
 
 
@@ -309,3 +311,32 @@ void Shots::update(int x, int y, int vx, int vy) {
     shotsView.render(shots);
 }
 /* -=-=-=-=-=-=-=-=-=-=-  END OF SHOTS IMPLEMENTATION  -=-=-=-=-=-=-=-=-=-=- */
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-  GAME IMPLEMENTATION  -=-=-=-=-=-=-=-=-=-=-=-=- */
+void Game::update() {
+
+        // clear scene
+        SDL_RenderClear(renderer);
+
+        // update all members
+        samusController.update(map.room.blocks,
+                               map.room.doors,
+                               map.room.metroids);
+        shotsController.update(
+            samus.rect.x + samus.rect.w/2,
+            samus.rect.y + samus.rect.h/2,
+            1.5 * samus.xSight * SamusConstants::horizontalStep,
+            1.5 * samus.ySight * SamusConstants::horizontalStep
+        );
+        map.update(shots, samus);
+
+        // render scene
+        SDL_RenderPresent(renderer);
+}
+
+Game::~Game() {
+    // stop SDL
+    unloadSDL(window, renderer);
+}
+/* -=-=-=-=-=-=-=-=-=-=- END  OF  GAME  IMPLEMENTATION -=-=-=-=-=-=-=-=-=-=- */

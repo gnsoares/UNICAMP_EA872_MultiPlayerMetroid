@@ -1,22 +1,23 @@
 #ifndef METROID_CONTROLLERS_H
 #define METROID_CONTROLLERS_H
 
-#include <memory.h>
+#include <memory>
 #include <SDL2/SDL.h>
 #include "models.hpp"
-#include "views.hpp"
 #include "utils.hpp"
+#include "views.hpp"
 
 
 namespace Controllers {
 
     class Map {
         private:
-            Models::Room &room; /*!< Model (previously allocated) */
             Views::Map &mapView; /*!< View (previously allocated) */
             int damageCooldown = 0; /*!< Controls damage*/
 
         public:
+            Models::Room &room; /*!< Model (previously allocated) */
+
             /*! \brief Map controller's constructor
              *
              * Receives a model and a view previously allocated
@@ -64,7 +65,6 @@ namespace Controllers {
             int damageCooldown = 0;
 
         public:
-
             /*! \brief Samus controller's constructor
              *
              * Receives a model and a view previously allocated
@@ -157,6 +157,41 @@ namespace Controllers {
              * \return nothing
              */
             void update(int x, int y, int vx, int vy);
+    };
+
+    class Game {
+        private:
+            // SDL attributes
+            SDL_Window *window = loadWindow();
+            SDL_Renderer *renderer = loadRenderer(window);
+
+            // samus
+            Models::Samus samus = Models::Samus(Screen::width/2, Screen::height/2);
+            Views::Samus samusView = Views::Samus(window, renderer);
+            Controllers::Samus samusController = Samus(samus, samusView);
+
+            // shots
+            std::vector<Models::Shot> shots;
+            Views::Shots shotsView = Views::Shots(window, renderer);
+            Controllers::Shots shotsController = Shots(shots, shotsView);
+
+            // Map
+            Views::Map mapView = Views::Map(window, renderer);
+            Models::Room room = loadRoom("test");
+            Controllers::Map map = Map(room, mapView);
+
+        public:
+            /*! \brief game controller's destructor
+             *
+             * Unloads SDL attributes
+             */
+            ~Game();
+
+            /*! \brief Update game state
+             *
+             * \return nothing
+             */
+            void update();
     };
 }
 

@@ -1,8 +1,6 @@
 #include <chrono>
-#include "constants.hpp"
+#include <SDL2/SDL.h>
 #include "controllers.hpp"
-#include "models.hpp"
-#include "utils.hpp"
 
 
 int main() {
@@ -10,25 +8,10 @@ int main() {
     // time control variable
     std::chrono::duration<double> elapsed;
 
-    // SDL visualization variables
-    SDL_Window *window = loadWindow();
-    SDL_Renderer *renderer = loadRenderer(window);
+    // game controller
+    Controllers::Game game;
 
-    // Samus
-    Models::Samus samus(Screen::width/2, Screen::height/2);
-    Views::Samus samusView(window, renderer);
-    Controllers::Samus samusController(samus, samusView);
-
-    // Shots
-    std::vector<Models::Shot> shots;
-    Views::Shots shotsView(window, renderer);
-    Controllers::Shots shotsController(shots, shotsView);
-
-    // Map
-    Models::Room testRoom = loadRoom("test");
-    Views::Map mapView(window, renderer);
-    Controllers::Map map(testRoom, mapView);
-
+    // sdl events
     SDL_Event event;
 
     // Game must run until user quits
@@ -46,21 +29,8 @@ int main() {
 
         }
 
-        // clear scene
-        SDL_RenderClear(renderer);
-
-        // update all members
-        samusController.update(testRoom.blocks, testRoom.doors, testRoom.metroids);
-        shotsController.update(
-            samus.rect.x + samus.rect.w/2,
-            samus.rect.y + samus.rect.h/2,
-            1.5 * samus.xSight * SamusConstants::horizontalStep,
-            1.5 * samus.ySight * SamusConstants::horizontalStep
-        );
-        map.update(shots, samus);
-
-        // render scene
-        SDL_RenderPresent(renderer);
+        // update game state
+        game.update();
 
         // fetch end of game iteration
         auto end = std::chrono::system_clock::now();
@@ -72,9 +42,6 @@ int main() {
         SDL_Delay(35 - elapsed.count());
 
     }
-
-    // stop SDL
-    unloadSDL(window, renderer);
 
     return 0;
 }
