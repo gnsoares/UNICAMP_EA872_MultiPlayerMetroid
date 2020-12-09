@@ -1,11 +1,13 @@
 #ifndef METROID_MODELS_H
 #define METROID_MODELS_H
 
+#include <SDL2/SDL.h>
 #include <string>
 #include <vector>
-#include <SDL2/SDL.h>
 #include "constants.hpp"
+#include "json.hpp"
 
+using nlohmann::json;
 
 namespace Models {
     class Entity {
@@ -19,6 +21,7 @@ namespace Models {
              * \param y entity y coordinate
              */
             explicit Entity(int x, int y);
+            explicit Entity();
     };
 
     class Samus:public Entity {
@@ -33,6 +36,17 @@ namespace Models {
             bool isFalling = false; /*!< whether or not Samus is falling */
             std::string state; /*!< Samus' state */
 
+            NLOHMANN_DEFINE_TYPE_INTRUSIVE(Samus,
+                                           rect.x,
+                                           rect.y,
+                                           missileCounter,
+                                           vy,
+                                           xSight,
+                                           ySight,
+                                           isJumping,
+                                           isFalling,
+                                           hp,
+                                           state);
     };
 
     class Metroid:public Entity {
@@ -52,6 +66,18 @@ namespace Models {
              * \param y entity y coordinate
              */
             explicit Metroid(int x, int y);
+            explicit Metroid();
+
+            NLOHMANN_DEFINE_TYPE_INTRUSIVE(Metroid,
+                                           hp,
+                                           rect.x,
+                                           rect.y,
+                                           xi,
+                                           yi,
+                                           ax,
+                                           ay,
+                                           vx,
+                                           vy);
     };
 
     class MotherBrain:public Entity {
@@ -64,6 +90,11 @@ namespace Models {
         using Entity::Entity;
         public:
             std::string type; /*!< Block type */
+
+            NLOHMANN_DEFINE_TYPE_INTRUSIVE(Block,
+                                           rect.x,
+                                           rect.y,
+                                           type);
     };
 
     class MorphingBall:public Entity {
@@ -84,6 +115,12 @@ namespace Models {
              * \param vy shot vertical velocity
              */
             explicit Shot(int x, int y, int vx, int vy);
+
+            NLOHMANN_DEFINE_TYPE_INTRUSIVE(Shot,
+                                           rect.x,
+                                           rect.y,
+                                           vx,
+                                           vy);
     };
 
     class MissileShot:public Entity {
@@ -103,6 +140,12 @@ namespace Models {
         public:
             bool isOpen = false; /*!< Whether or not the door is open */
             std::string leadsTo = ""; /*!< Where the door leads to */
+
+            NLOHMANN_DEFINE_TYPE_INTRUSIVE(Door,
+                                           rect.x,
+                                           rect.y,
+                                           isOpen,
+                                           leadsTo);
     };
 
     class Room {
@@ -113,7 +156,10 @@ namespace Models {
             std::vector<Metroid> metroids; /*!< Vector of Metroid objects */
             MorphingBall *morphingball = nullptr; /*!< Morphing Ball pointer */
             MotherBrain *motherbrain = nullptr; /*!< MotherBrain pointer */
+
+            NLOHMANN_DEFINE_TYPE_INTRUSIVE(Room, name, blocks, doors, metroids);
     };
+
 }
 
 #endif
