@@ -1,13 +1,16 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include <SDL2/SDL.h>
 #include "constants.hpp"
 #include "controllers.hpp"
 #include "models.hpp"
 #include "utils.hpp"
 #include "views.hpp"
+
 using namespace Controllers;
+using nlohmann::json;
 
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-  MAP  IMPLEMENTATION  -=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -333,10 +336,70 @@ void Game::update() {
 
         // render scene
         SDL_RenderPresent(renderer);
+
+        SDL_PumpEvents();
+
+        if(state[SDL_SCANCODE_S]){
+            Game::save();
+            std::cout << "saved" << std::endl;
+        }
+
+        if(state[SDL_SCANCODE_L]){
+            Game::load();
+            std::cout << "loaded" << std::endl;
+        }
+
 }
 
 Game::~Game() {
     // stop SDL
     unloadSDL(window, renderer);
+}
+
+void Game::save() {
+    json state;
+
+    state["samus"] = samus;
+    state["room"] = room;
+
+    std::ofstream f;
+    f.open("../assets/save.json");
+    f << state;
+    f.close();
+}
+
+void Game::load() {
+    std::ifstream f1;
+    json state;
+    f1.open("../assets/save.json");
+    f1 >> state;
+    f1.close();
+
+    // samus
+    samus.hp = state["samus"]["hp"];
+    samus.isFalling = state["samus"]["isFalling"];
+    samus.isJumping = state["samus"]["isJumping"];
+    samus.missileCounter = state["samus"]["missileCounter"];
+    samus.rect.x = state["samus"]["rect.x"];
+    samus.rect.y = state["samus"]["rect.y"];
+    samus.state = state["samus"]["state"];
+    samus.vy = state["samus"]["vy"];
+    samus.xSight = state["samus"]["xSight"];
+    samus.ySight = state["samus"]["ySight"];
+
+    // room
+    Models::Room newRoom;
+    newRoom.name = state["room"]["name"];
+    for (Models::Block block: state["room"]["blocks"]) {
+        newRoom.blocks.push_back(block);
+    }
+    for (Models::Door door: state["room"]["doors"]) {
+        newRoom.doors.push_back(door);
+    }
+    for (Models::Metroid metroid: state["room"]["metroids"]) {
+        newRoom.metroids.push_back(metroid);
+    }
+    map.changeRooms(newRoom);
+
 }
 /* -=-=-=-=-=-=-=-=-=-=- END  OF  GAME  IMPLEMENTATION -=-=-=-=-=-=-=-=-=-=- */

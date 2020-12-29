@@ -6,6 +6,7 @@
 #include "models.hpp"
 #include "utils.hpp"
 #include "views.hpp"
+#include "json.hpp"
 
 
 namespace Controllers {
@@ -180,7 +181,13 @@ namespace Controllers {
             Models::Room room = loadRoom("test");
             Controllers::Map map = Map(room, mapView);
 
+            const Uint8* state;
+
         public:
+            Game(){
+                this->state = SDL_GetKeyboardState(nullptr);
+            }
+
             /*! \brief game controller's destructor
              *
              * Unloads SDL attributes
@@ -192,6 +199,12 @@ namespace Controllers {
              * \return nothing
              */
             void update();
+
+            /*! \brief save game state
+             *
+             */
+            void save();
+            void load();
     };
 }
 
