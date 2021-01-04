@@ -44,13 +44,17 @@ namespace MetroidConstants {
 }
 
 namespace Screen {
-    const int width = 640;  /*!< Screen width*/
-    const int height = 360;  /*!< Screen height*/
+    const int width = 960;  /*!< Screen width*/
+    const int height = 540;  /*!< Screen height*/
+    const std::string initialRoom = "init";
 }
 
 namespace SamusConstants {
+
+    const int initialX = 460;
+    const int initialY = 140;
     const int horizontalStep = 10;  /*!< Samus's horizontal step */
-    const int jumpVy = -18;  /*!<  Samus' jump initial velocity */
+    const int jumpVy = -21;  /*!<  Samus' jump initial velocity */
     const int gravity = 2;  /*!< Gravity */
 
     const int initialHP = 100;  /*!< Samus' initial hp */

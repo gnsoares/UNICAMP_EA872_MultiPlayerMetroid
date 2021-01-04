@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <SDL2/SDL.h>
+#include "constants.hpp"
 #include "models.hpp"
 #include "utils.hpp"
 #include "views.hpp"
@@ -167,7 +168,7 @@ namespace Controllers {
             SDL_Renderer *renderer = loadRenderer(window);
 
             // samus
-            Models::Samus samus = Models::Samus(Screen::width/2, Screen::height/2);
+            Models::Samus samus = Models::Samus(SamusConstants::initialX, SamusConstants::initialY);
             Views::Samus samusView = Views::Samus(window, renderer);
             Controllers::Samus samusController = Samus(samus, samusView);
 
@@ -178,7 +179,7 @@ namespace Controllers {
 
             // Map
             Views::Map mapView = Views::Map(window, renderer);
-            Models::Room room = loadRoom("test");
+            Models::Room room = loadRoom(Screen::initialRoom);
             Controllers::Map map = Map(room, mapView);
 
             const Uint8* state;
