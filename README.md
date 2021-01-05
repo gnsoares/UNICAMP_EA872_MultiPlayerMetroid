@@ -6,6 +6,6 @@ To build just run `mkdir build && cd build`, then `cmake ../` and, finally, `mak
 
 To play, just run `./metroid`. Use space to jump and and left and right arrows to move Samus across the room. To shoot, press `1` and the arrow pointing to the direction you wish to shoot at.
 
-# Code Structure
+# Documentation
 
 To see the code structure just run `doxygen Doxyfile`, then go to `/doc/html` and there, run `(your browser name, eg. firefox) index.html`. Not that you need to have `doxygen` installed in yout system.
