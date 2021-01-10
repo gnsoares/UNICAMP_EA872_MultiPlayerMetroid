@@ -68,4 +68,5 @@ SDL_Renderer *loadRenderer(SDL_Window *window);
  */
 void unloadSDL(SDL_Window *window, SDL_Renderer *renderer);
 
+std::string validateJsonString(std::string jsonString);
 #endif
