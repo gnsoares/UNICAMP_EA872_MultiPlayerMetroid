@@ -33,6 +33,7 @@ target_link_libraries(metroid views)
 target_link_libraries(metroid SDL2)
 target_link_libraries(metroid SDL2_image)
 target_link_libraries(metroid pthread)
+target_link_libraries(metroid boost_program_options)
 
 # Garantir que usaremos C++11 (ou superior, se preciso)
 set(CMAKE_CXX_STANDARD 11)

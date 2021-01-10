@@ -3,11 +3,14 @@
 
 #include <memory>
 #include <SDL2/SDL.h>
+
 #include "constants.hpp"
+#include "json.hpp"
 #include "models.hpp"
 #include "utils.hpp"
 #include "views.hpp"
-#include "json.hpp"
+
+using nlohmann::json;
 
 
 namespace Controllers {
@@ -182,12 +185,10 @@ namespace Controllers {
             Models::Room room = loadRoom(Screen::initialRoom);
             Controllers::Map map = Map(room, mapView);
 
-            const Uint8* state;
-
         public:
-            Game(){
-                this->state = SDL_GetKeyboardState(nullptr);
-            }
+            bool isMultiplayer = false;
+            bool isHost = false;
+            std::string my_ip_address = "";
 
             /*! \brief game controller's destructor
              *
@@ -199,7 +200,7 @@ namespace Controllers {
              *
              * \return nothing
              */
-            void update();
+            void update(json &state, std::vector<std::string> otherPlayers);
 
             /*! \brief save game state
              *
