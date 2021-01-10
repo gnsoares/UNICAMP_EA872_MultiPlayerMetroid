@@ -20,6 +20,8 @@ target_link_libraries(metroid models)
 add_library(receivers src/receivers.cpp)
 target_link_libraries(metroid receivers)
 
+add_library(transmitters src/transmitters.cpp)
+target_link_libraries(metroid transmitters)
 
 add_library(utils src/utils.cpp)
 target_link_libraries(metroid utils)
