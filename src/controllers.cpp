@@ -205,6 +205,10 @@ void Samus::moveLeft() {
 
     // walk left
     samus.rect.x -= SamusConstants::horizontalStep;
+
+    // out of window: stay at the border
+    if (samus.rect.x < 0)
+        samus.rect.x = 0;
 }
 
 void Samus::moveRight() {
@@ -215,6 +219,10 @@ void Samus::moveRight() {
 
     // walk right
     samus.rect.x += SamusConstants::horizontalStep;
+
+    // out of window: stay at the border
+    if (samus.rect.x + samus.rect.w > Screen::width)
+        samus.rect.x = Screen::width - samus.rect.w;
 }
 
 void Samus::update(std::vector<Models::Block> blocks, std::vector<Models::Door> doors, std::vector<Models::Metroid> metroids) {
@@ -230,7 +238,7 @@ void Samus::update(std::vector<Models::Block> blocks, std::vector<Models::Door> 
     if (command == Commands::moveLeft) moveLeft();
     if (command == Commands::moveRight) moveRight();
 
-     // set new vertical position
+    // set new vertical position
     samus.rect.y += samus.vy + SamusConstants::gravity / 2;
 
     // set new vertical velocity
@@ -242,6 +250,13 @@ void Samus::update(std::vector<Models::Block> blocks, std::vector<Models::Door> 
     // check collision with blocks and doors
     processSamusCollisionWithWall(samus, blocks, prevX, prevY);
     processSamusCollisionWithWall(samus, doors, prevX, prevY);
+
+    // out of window: stay at the border
+    if (samus.rect.y < 0)
+        samus.rect.y = 0;
+    else if (samus.rect.y + samus.rect.h > Screen::height)
+        samus.rect.y = Screen::height - samus.rect.h;
+
 
     // check collision with metroids
     if (damageCooldown == 0) {
