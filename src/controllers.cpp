@@ -1,10 +1,12 @@
 #include <cstdlib>
 #include <iostream>
-#include <vector>
 #include <fstream>
 #include <SDL2/SDL.h>
+#include <vector>
+
 #include "constants.hpp"
 #include "controllers.hpp"
+#include "json.hpp"
 #include "models.hpp"
 #include "utils.hpp"
 #include "views.hpp"
@@ -332,37 +334,35 @@ void Shots::update(int x, int y, int vx, int vy) {
 
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-  GAME IMPLEMENTATION  -=-=-=-=-=-=-=-=-=-=-=-=- */
-void Game::update() {
+void Game::update(json &state, std::vector<std::string> otherPlayers) {
 
-        // clear scene
-        SDL_RenderClear(renderer);
+    // clear scene
+    SDL_RenderClear(renderer);
 
-        // update all members
-        samusController.update(map.room.blocks,
-                               map.room.doors,
-                               map.room.metroids);
-        shotsController.update(
-            samus.rect.x + samus.rect.w/2,
-            samus.rect.y + samus.rect.h/2,
-            1.5 * samus.xSight * SamusConstants::horizontalStep,
-            1.5 * samus.ySight * SamusConstants::horizontalStep
-        );
-        map.update(shots, samus);
+    // update all members
+    samusController.update(map.room.blocks,
+                            map.room.doors,
+                            map.room.metroids);
+    shotsController.update(
+        samus.rect.x + samus.rect.w/2,
+        samus.rect.y + samus.rect.h/2,
+        1.5 * samus.xSight * SamusConstants::horizontalStep,
+        1.5 * samus.ySight * SamusConstants::horizontalStep
+    );
+    map.update(shots, samus);
 
-        // render scene
-        SDL_RenderPresent(renderer);
+    // render scene
+    SDL_RenderPresent(renderer);
 
-        SDL_PumpEvents();
+    state[my_ip_address] = json::object({});
 
-        if(state[SDL_SCANCODE_S]){
-            Game::save();
-            std::cout << "saved" << std::endl;
-        }
+    state[my_ip_address]["samus"] = samus;
+    state[my_ip_address]["shots"] = shots;
 
-        if(state[SDL_SCANCODE_L]){
-            Game::load();
-            std::cout << "loaded" << std::endl;
-        }
+    if (isHost) {
+        state[my_ip_address]["room"] = map.room.name;
+        state[my_ip_address]["metroids"] = map.room.metroids;
+    }
 
 }
 
