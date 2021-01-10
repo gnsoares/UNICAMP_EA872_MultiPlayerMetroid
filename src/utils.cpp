@@ -356,3 +356,23 @@ void unloadSDL(SDL_Window *window, SDL_Renderer *renderer) {
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
+
+
+std::string validateJsonString(std::string jsonString) {
+
+    int parenthesisCounter = 0;
+    int i;
+
+    for (i = 0; i < jsonString.size(); i++) {
+        if (jsonString[i] == '{')
+            parenthesisCounter++;
+        else if (jsonString[i] == '}')
+            parenthesisCounter--;
+        if (parenthesisCounter == 0)
+            break;
+    }
+
+    jsonString[i + 1] = 0;
+
+    return jsonString;
+}
