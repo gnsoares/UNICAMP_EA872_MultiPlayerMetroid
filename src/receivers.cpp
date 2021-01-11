@@ -77,6 +77,9 @@ void Receivers::otherPlayers(
 
     auto received = json::parse(validateJsonString(std::string(buffer)));
 
+    if (!received.contains("otherPlayers") || received["otherPlayers"] == nullptr)
+        std::cout << "ERROR: Could not get other players addresses" << std::endl;
+
     for (int i = 0; i < received["otherPlayers"].size(); i++)
         if (received["otherPlayers"][i] != my_ip_address)
             (*addresses).push_back(received["otherPlayers"][i]);

@@ -30,7 +30,7 @@ void Map::changeRooms(Models::Room &room) {
 }
 
 void Map::damageMetroid(Models::Metroid &metroid) {
-    
+
     // set cooldown to avoid repeated damage
     damageCooldown = 5;
 
@@ -44,7 +44,7 @@ void Map::damageMetroid(Models::Metroid &metroid) {
     std::cout << "Metroid damage " << metroid.hp << "\n";
 }
 
-void Map::update(std::vector<Models::Shot> shots, Models::Samus &samus) {
+void Map::update(std::vector<Models::Shot> shots, Models::Samus &samus, bool canChangeRooms) {
     int prevX, prevY;
 
     // update metroids
@@ -92,8 +92,9 @@ void Map::update(std::vector<Models::Shot> shots, Models::Samus &samus) {
     // update doors
     for (int i = 0; i < room.doors.size(); i++) {
 
-        // door is open and collided with Samus: change rooms
-        if (room.doors[i].isOpen &&
+        // door is open and collided with a Samus that can change rooms: change
+        if (canChangeRooms &&
+            room.doors[i].isOpen &&
             checkCollision(samus.rect, room.doors[i].rect)) {
             std::string oldRoom = room.name;
             Models::Room newRoom = loadRoom(room.doors[i].leadsTo);
@@ -339,6 +340,17 @@ void Game::update(json &state, std::vector<std::string> otherPlayers) {
     // clear scene
     SDL_RenderClear(renderer);
 
+    // is not host: check for changes in room
+    if (!isHost && state.contains(otherPlayers[0]) && state[otherPlayers[0]]["room"] != map.room.name && state[otherPlayers[0]]["samus"] != nullptr) {
+
+        // change rooms
+        Models::Room newRoom = loadRoom(state[otherPlayers[0]]["room"]);
+        map.changeRooms(newRoom);
+
+        // update own samus position to host's
+        samus.update(state[otherPlayers[0]]["samus"]);
+    }
+
     // update all members
     samusController.update(map.room.blocks,
                             map.room.doors,
@@ -349,11 +361,39 @@ void Game::update(json &state, std::vector<std::string> otherPlayers) {
         1.5 * samus.xSight * SamusConstants::horizontalStep,
         1.5 * samus.ySight * SamusConstants::horizontalStep
     );
-    map.update(shots, samus);
+    map.update(shots, samus, isHost);
 
-    // render scene
-    SDL_RenderPresent(renderer);
+    // render other players' stuff
+    for (int i = 0; i < otherPlayers.size(); i++) {
+        if (!state.contains(otherPlayers[i]) ||
+            state[otherPlayers[i]]["samus"] == nullptr ||
+            state[otherPlayers[i]]["shots"] == nullptr)
+            continue;
 
+        // could not find other player's samus model: create it
+        if (otherSamuses.find(otherPlayers[i]) == otherSamuses.end()) {
+            otherSamuses[otherPlayers[i]] = Models::Samus(state[otherPlayers[i]]["samus"]);
+            samusView.loadTexture(otherSamuses[otherPlayers[i]]);
+
+        // found other player's samus model: update it
+        } else {
+            otherSamuses[otherPlayers[i]].update(state[otherPlayers[i]]["samus"]);
+        }
+
+        // render other player's samus
+        samusView.render(otherSamuses[otherPlayers[i]]);
+
+        // render other player's shots
+        std::vector<Models::Shot> tmpShots;
+        for (int j = 0; j < state[otherPlayers[i]]["shots"].size(); j++) {
+            Models::Shot tmpShot(state[otherPlayers[i]]["shots"][j]);
+            shotsView.loadTexture(tmpShot);
+            tmpShots.push_back(tmpShot);
+        }
+        shotsView.render(tmpShots);
+    }
+
+    // save new state
     state[my_ip_address] = json::object({});
 
     state[my_ip_address]["samus"] = samus;
@@ -363,6 +403,9 @@ void Game::update(json &state, std::vector<std::string> otherPlayers) {
         state[my_ip_address]["room"] = map.room.name;
         state[my_ip_address]["metroids"] = map.room.metroids;
     }
+
+    // render scene
+    SDL_RenderPresent(renderer);
 
 }
 

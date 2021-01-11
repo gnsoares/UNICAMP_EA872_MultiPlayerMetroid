@@ -33,7 +33,7 @@ json state = json::object({});
 void transmitState(std::string my_ip_address) {
     while (true) {
         Transmitters::state(state, otherPlayers, PORT, my_ip_address, &my_socket);
-        std::this_thread::sleep_for(std::chrono::milliseconds(25));
+        std::this_thread::sleep_for(std::chrono::milliseconds(15));
     }
 }
 
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
 
     std::string my_ip_address = "127.0.0.1";
     bool isMultiplayer = vm.count("gamemode") ? vm["gamemode"].as<std::string>() == "multi" : false;
-    bool isHost = false;
+    bool isHost = true;
 
     // setup multiplayer
     if (isMultiplayer) {

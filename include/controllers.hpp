@@ -1,6 +1,7 @@
 #ifndef METROID_CONTROLLERS_H
 #define METROID_CONTROLLERS_H
 
+#include <map>
 #include <memory>
 #include <SDL2/SDL.h>
 
@@ -60,7 +61,7 @@ namespace Controllers {
              * \param samus samus model
              * \return nothing
              */
-            void update(std::vector<Models::Shot> shots, Models::Samus &samus);
+            void update(std::vector<Models::Shot> shots, Models::Samus &samus, bool canChangeRooms);
     };
 
     class Samus {
@@ -125,6 +126,7 @@ namespace Controllers {
              * \return nothing
              */
             void update(std::vector<Models::Block> blocks, std::vector<Models::Door> doors, std::vector<Models::Metroid> metroids);
+            void update(json state);
     };
 
     class Shots {
@@ -174,6 +176,7 @@ namespace Controllers {
             Models::Samus samus = Models::Samus(SamusConstants::initialX, SamusConstants::initialY);
             Views::Samus samusView = Views::Samus(window, renderer);
             Controllers::Samus samusController = Samus(samus, samusView);
+            std::map<std::string, Models::Samus> otherSamuses;
 
             // shots
             std::vector<Models::Shot> shots;
