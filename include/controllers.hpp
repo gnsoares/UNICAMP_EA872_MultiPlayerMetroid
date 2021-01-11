@@ -201,14 +201,26 @@ namespace Controllers {
 
             /*! \brief Update game state
              *
+             * \param player state
+             * \param vector of strings with players' IPs
              * \return nothing
              */
             void update(json &state, std::vector<std::string> otherPlayers);
 
-            /*! \brief save game state
+            /*! \brief Save game state
              *
+             * \param nothing
+             * \return nothing
              */
             void save();
+
+            /*! \brief Loads game state
+             * 
+             * Loads the game's last saved state
+             * 
+             * \param nothing
+             * \return nothing
+             */
             void load();
     };
 }

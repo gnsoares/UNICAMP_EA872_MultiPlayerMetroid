@@ -13,8 +13,20 @@
 using boost::asio::ip::udp;
 using nlohmann::json;
 
-
 namespace Transmitters {
+
+
+    /*! \brief Sends handshake to other players
+     * 
+     * Configuration of the handshake
+     * 
+     * \param host IP
+     * \param message to confirm handshake
+     * \param port number
+     * \param socket
+     * \param endpoint
+     * \return nothing
+     */
 
     void handshake(
         std::string hostIP,
@@ -25,11 +37,26 @@ namespace Transmitters {
         int size
     );
 
+    /*! \brief Estabilishes connection with other players
+     * 
+     * \param vector containing other players' adresses (IPs)
+     * \param port number
+     * \param socket
+     */
+
     void otherPlayers(
         std::vector<std::string> addresses,
         int port,
         udp::socket *socket
     );
+
+    /*! \brief Sends the player's game state to other players
+     *
+     * \param json containing player's state
+     * \param port number
+     * \param player's IP address
+     * \param socket
+     */
 
     void state(
         json state,
