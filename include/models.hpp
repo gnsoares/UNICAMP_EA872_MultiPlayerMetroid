@@ -36,6 +36,12 @@ namespace Models {
             bool isFalling = false; /*!< whether or not Samus is falling */
             std::string state; /*!< Samus' state */
 
+            explicit Samus();
+            explicit Samus(json samus);
+            explicit Samus(int x, int y);
+
+            void update(json samus);
+
             NLOHMANN_DEFINE_TYPE_INTRUSIVE(Samus,
                                            rect.x,
                                            rect.y,
@@ -115,7 +121,7 @@ namespace Models {
              * \param vy shot vertical velocity
              */
             explicit Shot(int x, int y, int vx, int vy);
-
+            explicit Shot(json shot);
             NLOHMANN_DEFINE_TYPE_INTRUSIVE(Shot,
                                            rect.x,
                                            rect.y,
