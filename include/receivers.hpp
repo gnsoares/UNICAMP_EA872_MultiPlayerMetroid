@@ -16,6 +16,14 @@ using nlohmann::json;
 
 namespace Receivers {
 
+    /*! \brief Receives handshakes from other players
+     *
+     * \param vector containing other players' IPs
+     * \param socket
+     * \param endpoint
+     * \return nothing
+     */
+
     void handshakes(
         int n,
         std::vector<std::string> *addresses,
@@ -23,6 +31,14 @@ namespace Receivers {
         udp::endpoint endpoint,
         int size
     );
+
+    /*! \brief Receives other players' connection infos
+     * \param vector containing other player's adresses
+     * \param strhing containing the player ip adress
+     * \param socket
+     * \param endpoint
+     * \param integer equivalent to number of players
+     */
 
     void otherPlayers(
         std::vector<std::string> *addresses,
@@ -32,6 +48,14 @@ namespace Receivers {
         int size
     );
 
+    /*! \brief Receives other players' game states
+     *
+     * \param json containing other players' states
+     * \param other players' IP addresses
+     * \param socket
+     * \param endpoint
+     * \return nothing
+     */
     void state(
         json *state,
         std::vector<std::string> addresses,
