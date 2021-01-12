@@ -20,11 +20,11 @@ namespace Transmitters {
      * 
      * Configuration of the handshake
      * 
-     * \param host IP
-     * \param message to confirm handshake
-     * \param port number
-     * \param socket
-     * \param endpoint
+     * \param hostIP host IP
+     * \param message message to confirm handshake
+     * \param portport number
+     * \param socket socket
+     * \param endpoint endpoint
      * \return nothing
      */
 
@@ -39,9 +39,9 @@ namespace Transmitters {
 
     /*! \brief Estabilishes connection with other players
      * 
-     * \param vector containing other players' adresses (IPs)
-     * \param port number
-     * \param socket
+     * \param adresses vector containing other players' adresses (IPs)
+     * \param port port number
+     * \param scoket socket
      */
 
     void otherPlayers(
@@ -52,10 +52,10 @@ namespace Transmitters {
 
     /*! \brief Sends the player's game state to other players
      *
-     * \param json containing player's state
-     * \param port number
-     * \param player's IP address
-     * \param socket
+     * \param state json containing player's state
+     * \param port port number
+     * \param adresses player's IP address
+     * \param socket socket
      */
 
     void state(

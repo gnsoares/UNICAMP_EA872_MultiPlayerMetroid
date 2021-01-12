@@ -36,10 +36,29 @@ namespace Models {
             bool isFalling = false; /*!< whether or not Samus is falling */
             std::string state; /*!< Samus' state */
 
+            /*! \brief Samus constructor
+             */
             explicit Samus();
+
+            /*! \brief Samus constructor
+             * 
+             * \param samus json
+             */
             explicit Samus(json samus);
+
+            /*! \brief Samus constructor
+             * 
+             *  \param x samus x coordinate
+             *  \param y samus y coordinate
+             */
             explicit Samus(int x, int y);
 
+
+            /*! \brief Updates Samus attributes
+             * 
+             *  \param samus json containing samus' attributes to be updated
+             *  \return nothing
+             */
             void update(json samus);
 
             NLOHMANN_DEFINE_TYPE_INTRUSIVE(Samus,
@@ -72,6 +91,9 @@ namespace Models {
              * \param y entity y coordinate
              */
             explicit Metroid(int x, int y);
+
+            /*! \brief Metroid constructor
+             */
             explicit Metroid();
 
             NLOHMANN_DEFINE_TYPE_INTRUSIVE(Metroid,
@@ -121,6 +143,11 @@ namespace Models {
              * \param vy shot vertical velocity
              */
             explicit Shot(int x, int y, int vx, int vy);
+
+            /*! \brief Shot constructor
+             *
+             * \param shot json 
+             */
             explicit Shot(json shot);
             NLOHMANN_DEFINE_TYPE_INTRUSIVE(Shot,
                                            rect.x,
