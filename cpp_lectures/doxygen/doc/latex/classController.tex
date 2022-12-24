@@ -1,0 +1,109 @@
+\hypertarget{classController}{}\doxysection{Controller Class Reference}
+\label{classController}\index{Controller@{Controller}}
+
+
+Classe para o controller.  
+
+
+
+
+{\ttfamily \#include $<$controller.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classController_a36312ab435bb34df05b3af279f93d0b5}{Controller}} (\mbox{\hyperlink{classModel}{Model}} \&\mbox{\hyperlink{classController_a85523dcb33e36c83c7b412a688fc431f}{model}}, \mbox{\hyperlink{classView}{View}} \&\mbox{\hyperlink{classController_af14d6d41e296aaf8fa2850bbd1ebab87}{view}})
+\begin{DoxyCompactList}\small\item\em Construtor do controller. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classController_a0ab87934c4f7a266cfdb86e0f36bc1b5}{$\sim$\+Controller}} ()
+\begin{DoxyCompactList}\small\item\em Destrutor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classController_a6fe5f85677914b59f05705bf9181d948}{step}} ()
+\begin{DoxyCompactList}\small\item\em Executa o calculo de um passo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classModel}{Model}} \mbox{\hyperlink{classController_a85523dcb33e36c83c7b412a688fc431f}{model}}
+\item 
+\mbox{\hyperlink{classView}{View}} \mbox{\hyperlink{classController_af14d6d41e296aaf8fa2850bbd1ebab87}{view}}
+\item 
+int \mbox{\hyperlink{classController_a12288e050cd07a0b4d433f3c05e137c2}{variavel\+\_\+interna}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Classe para o controller. 
+
+Esta é a classe do controller. O controller sabe quem é o model e quem é o view. Ele também tem uma variável interna. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classController_a36312ab435bb34df05b3af279f93d0b5}\label{classController_a36312ab435bb34df05b3af279f93d0b5}} 
+\index{Controller@{Controller}!Controller@{Controller}}
+\index{Controller@{Controller}!Controller@{Controller}}
+\doxysubsubsection{\texorpdfstring{Controller()}{Controller()}}
+{\footnotesize\ttfamily Controller\+::\+Controller (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classModel}{Model}} \&}]{model,  }\item[{\mbox{\hyperlink{classView}{View}} \&}]{view }\end{DoxyParamCaption})}
+
+
+
+Construtor do controller. 
+
+Deve receber um model e um view previamente alocados.
+
+
+\begin{DoxyParams}{Parameters}
+{\em model} & Um \mbox{\hyperlink{classModel}{Model}} \\
+\hline
+{\em view} & Um \mbox{\hyperlink{classView}{View}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Nada (este é um construtor!) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classController_a0ab87934c4f7a266cfdb86e0f36bc1b5}\label{classController_a0ab87934c4f7a266cfdb86e0f36bc1b5}} 
+\index{Controller@{Controller}!````~Controller@{$\sim$Controller}}
+\index{````~Controller@{$\sim$Controller}!Controller@{Controller}}
+\doxysubsubsection{\texorpdfstring{$\sim$Controller()}{~Controller()}}
+{\footnotesize\ttfamily Controller\+::$\sim$\+Controller (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destrutor. 
+
+Acredito que possa ser vazio... Esta documentacao esta no arquivo cpp
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classController_a6fe5f85677914b59f05705bf9181d948}\label{classController_a6fe5f85677914b59f05705bf9181d948}} 
+\index{Controller@{Controller}!step@{step}}
+\index{step@{step}!Controller@{Controller}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily void Controller\+::step (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Executa o calculo de um passo. 
+
+Deve ser chamado dentro de um loop caso queira executar a simulação várias vezes 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classController_a85523dcb33e36c83c7b412a688fc431f}\label{classController_a85523dcb33e36c83c7b412a688fc431f}} 
+\index{Controller@{Controller}!model@{model}}
+\index{model@{model}!Controller@{Controller}}
+\doxysubsubsection{\texorpdfstring{model}{model}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classModel}{Model}} Controller\+::model\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\hyperlink{classModel}{Model}} (alocado previamente) \mbox{\Hypertarget{classController_a12288e050cd07a0b4d433f3c05e137c2}\label{classController_a12288e050cd07a0b4d433f3c05e137c2}} 
+\index{Controller@{Controller}!variavel\_interna@{variavel\_interna}}
+\index{variavel\_interna@{variavel\_interna}!Controller@{Controller}}
+\doxysubsubsection{\texorpdfstring{variavel\_interna}{variavel\_interna}}
+{\footnotesize\ttfamily int Controller\+::variavel\+\_\+interna\hspace{0.3cm}{\ttfamily [private]}}
+
+Variavel interna \mbox{\Hypertarget{classController_af14d6d41e296aaf8fa2850bbd1ebab87}\label{classController_af14d6d41e296aaf8fa2850bbd1ebab87}} 
+\index{Controller@{Controller}!view@{view}}
+\index{view@{view}!Controller@{Controller}}
+\doxysubsubsection{\texorpdfstring{view}{view}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classView}{View}} Controller\+::view\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\hyperlink{classView}{View}} (alocado previamente) 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{controller_8hpp}{controller.\+hpp}}\item 
+src/\mbox{\hyperlink{controller_8cpp}{controller.\+cpp}}\end{DoxyCompactItemize}
